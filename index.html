@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NovaCart | Premium Everyday Commerce</title>
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="NovaCart home">
+        <span class="brand-mark">N</span>
+        <span>NovaCart</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#shop">Shop</a>
+        <a href="#deals">Deals</a>
+        <a href="#checkout">Checkout</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="icon-button" id="wishlistButton" type="button" aria-label="View wishlist">
+          <span aria-hidden="true">♡</span>
+          <span class="badge" id="wishlistCount">0</span>
+        </button>
+        <button class="icon-button" id="cartButton" type="button" aria-label="Open cart">
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
+            <path d="M6.2 6h14l-1.5 8.2a2 2 0 0 1-2 1.6H8.4a2 2 0 0 1-2-1.7L5.2 3.8H2.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="9" cy="20" r="1.4" fill="currentColor"/>
+            <circle cx="17" cy="20" r="1.4" fill="currentColor"/>
+          </svg>
+          <span class="badge" id="cartCount">0</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-content">
+          <p class="eyebrow">Curated tech, home and lifestyle essentials</p>
+          <h1>NovaCart</h1>
+          <p class="hero-copy">A fast, polished shopping experience with smart filters, instant cart updates, secure checkout flow and order confirmation built in.</p>
+          <div class="hero-actions">
+            <a class="primary-action" href="#shop">Shop collection</a>
+            <a class="secondary-action" href="#deals">View today&apos;s deals</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="trust-strip" aria-label="Store benefits">
+        <div>
+          <strong>Free shipping</strong>
+          <span>Orders over $75</span>
+        </div>
+        <div>
+          <strong>30-day returns</strong>
+          <span>Simple replacements</span>
+        </div>
+        <div>
+          <strong>Secure checkout</strong>
+          <span>Card, UPI and wallet ready</span>
+        </div>
+        <div>
+          <strong>Live support</strong>
+          <span>Every day, 9am-9pm</span>
+        </div>
+      </section>
+
+      <section class="shop-layout" id="shop">
+        <aside class="filters" aria-label="Product filters">
+          <div class="filter-heading">
+            <h2>Shop</h2>
+            <button class="text-button" id="clearFilters" type="button">Reset</button>
+          </div>
+
+          <label class="field">
+            <span>Search products</span>
+            <input id="searchInput" type="search" placeholder="Search headphones, bags..." autocomplete="off" />
+          </label>
+
+          <label class="field">
+            <span>Category</span>
+            <select id="categorySelect"></select>
+          </label>
+
+          <label class="field">
+            <span>Sort by</span>
+            <select id="sortSelect">
+              <option value="featured">Featured</option>
+              <option value="priceLow">Price: low to high</option>
+              <option value="priceHigh">Price: high to low</option>
+              <option value="rating">Highest rated</option>
+            </select>
+          </label>
+
+          <label class="range-field">
+            <span>Max price: <strong id="priceLabel">$500</strong></span>
+            <input id="priceRange" type="range" min="40" max="500" value="500" />
+          </label>
+
+          <div class="availability">
+            <label><input id="stockOnly" type="checkbox" /> In-stock only</label>
+            <label><input id="fastDeliveryOnly" type="checkbox" /> Fast delivery</label>
+          </div>
+        </aside>
+
+        <section class="catalog" aria-live="polite">
+          <div class="catalog-top">
+            <div>
+              <p class="eyebrow">Premium collection</p>
+              <h2 id="catalogTitle">Featured products</h2>
+            </div>
+            <p id="resultCount">0 products</p>
+          </div>
+          <div class="product-grid" id="productGrid"></div>
+        </section>
+      </section>
+
+      <section class="deals-band" id="deals">
+        <div>
+          <p class="eyebrow">Member deal</p>
+          <h2>Use code <span>NOVA15</span> for 15% off selected orders.</h2>
+        </div>
+        <button class="secondary-action" id="copyCodeButton" type="button">Copy code</button>
+      </section>
+
+      <section class="checkout-section" id="checkout">
+        <div class="checkout-intro">
+          <p class="eyebrow">Checkout</p>
+          <h2>Fast checkout built for fewer abandoned carts.</h2>
+          <p>Cart, delivery, payment and review stay on one page, so customers never feel lost.</p>
+        </div>
+
+        <form class="checkout-form" id="checkoutForm">
+          <div class="checkout-panel">
+            <h3>Contact and delivery</h3>
+            <div class="form-grid">
+              <label class="field"><span>Full name</span><input required name="name" placeholder="Aarav Sharma" /></label>
+              <label class="field"><span>Email</span><input required type="email" name="email" placeholder="you@example.com" /></label>
+              <label class="field"><span>Phone</span><input required name="phone" placeholder="+91 98765 43210" /></label>
+              <label class="field"><span>City</span><input required name="city" placeholder="Delhi" /></label>
+              <label class="field form-wide"><span>Address</span><input required name="address" placeholder="House no, street, area" /></label>
+            </div>
+          </div>
+
+          <div class="checkout-panel">
+            <h3>Delivery speed</h3>
+            <div class="option-row">
+              <label><input type="radio" name="shipping" value="standard" checked /> Standard, 3-5 days</label>
+              <strong>Free</strong>
+            </div>
+            <div class="option-row">
+              <label><input type="radio" name="shipping" value="express" /> Express, 1-2 days</label>
+              <strong>$12</strong>
+            </div>
+          </div>
+
+          <div class="checkout-panel">
+            <h3>Payment</h3>
+            <div class="payment-methods" role="radiogroup" aria-label="Payment method">
+              <label><input type="radio" name="payment" value="card" checked /> Card</label>
+              <label><input type="radio" name="payment" value="upi" /> UPI</label>
+              <label><input type="radio" name="payment" value="cod" /> Cash on delivery</label>
+            </div>
+            <label class="field"><span>Card or UPI reference</span><input name="paymentRef" placeholder="Demo checkout only" /></label>
+          </div>
+
+          <aside class="order-summary">
+            <h3>Order summary</h3>
+            <div id="checkoutItems" class="summary-items"></div>
+            <label class="promo-field">
+              <span>Promo code</span>
+              <input id="promoInput" placeholder="NOVA15" />
+              <button id="applyPromo" type="button">Apply</button>
+            </label>
+            <dl class="totals">
+              <div><dt>Subtotal</dt><dd id="subtotalValue">$0.00</dd></div>
+              <div><dt>Discount</dt><dd id="discountValue">-$0.00</dd></div>
+              <div><dt>Shipping</dt><dd id="shippingValue">$0.00</dd></div>
+              <div class="grand-total"><dt>Total</dt><dd id="totalValue">$0.00</dd></div>
+            </dl>
+            <button class="primary-action checkout-button" type="submit">Place order</button>
+            <p class="secure-note">Demo checkout: no payment is collected.</p>
+          </aside>
+        </form>
+      </section>
+    </main>
+
+    <aside class="cart-drawer" id="cartDrawer" aria-hidden="true" aria-label="Shopping cart">
+      <div class="drawer-header">
+        <div>
+          <p class="eyebrow">Your bag</p>
+          <h2>Cart</h2>
+        </div>
+        <button class="icon-button" id="closeCart" type="button" aria-label="Close cart">×</button>
+      </div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="drawer-footer">
+        <div class="mini-total"><span>Total</span><strong id="drawerTotal">$0.00</strong></div>
+        <a class="primary-action" href="#checkout" id="checkoutLink">Checkout now</a>
+      </div>
+    </aside>
+
+    <div class="overlay" id="overlay"></div>
+
+    <dialog class="quick-view" id="quickView">
+      <button class="icon-button dialog-close" id="closeQuickView" type="button" aria-label="Close product preview">×</button>
+      <div id="quickViewContent"></div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
