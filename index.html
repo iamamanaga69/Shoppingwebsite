@@ -3,215 +3,3193 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NovaCart | Premium Everyday Commerce</title>
-    <link rel="preconnect" href="https://images.unsplash.com" />
-    <link rel="stylesheet" href="styles.css" />
+    <title>NovaCart | Fast Premium Shopping</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      /* ==================== EDIT BRAND COLORS HERE ==================== */
+      :root {
+        --navy: #0a0a2e;
+        --purple: #7c3aed;
+        --purple-dark: #5b21b6;
+        --white: #f8faff;
+        --gold: #f59e0b;
+        --red: #ef4444;
+        --green: #10b981;
+        --ink: #141527;
+        --muted: #667085;
+        --line: #e7eaf2;
+        --card: #ffffff;
+        --soft-purple: #f2ebff;
+        --shadow: 0 20px 60px rgba(10, 10, 46, 0.12);
+        --shadow-strong: 0 26px 90px rgba(10, 10, 46, 0.2);
+        --radius: 24px;
+        --fast: 180ms ease;
+        --slow: 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      /* This resets default browser spacing so the layout looks consistent everywhere. */
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--white);
+        color: var(--ink);
+        font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      body.menu-open,
+      body.panel-open {
+        overflow: hidden;
+      }
+      img {
+        display: block;
+        max-width: 100%;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .page-loader {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: grid;
+        place-items: center;
+        background: var(--navy);
+        transition: opacity 500ms ease, visibility 500ms ease;
+      }
+      .page-loader.hidden {
+        visibility: hidden;
+        opacity: 0;
+      }
+      .loader-logo {
+        display: grid;
+        width: 92px;
+        height: 92px;
+        place-items: center;
+        border: 2px solid rgba(255, 255, 255, 0.18);
+        border-radius: 28px;
+        color: #fff;
+        background: linear-gradient(135deg, var(--purple), var(--gold));
+        font-size: 2.4rem;
+        font-weight: 900;
+        animation: loaderPulse 1s infinite alternate;
+      }
+      @keyframes loaderPulse {
+        from {
+          transform: scale(0.92) rotate(-4deg);
+        }
+        to {
+          transform: scale(1.06) rotate(4deg);
+        }
+      }
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        min-height: 78px;
+        padding: 0.8rem clamp(1rem, 4vw, 4rem);
+        border-bottom: 1px solid transparent;
+        transition: min-height var(--fast), background var(--fast), box-shadow var(--fast), border-color var(--fast);
+      }
+      .site-header.scrolled {
+        min-height: 66px;
+        border-color: rgba(231, 234, 242, 0.9);
+        background: rgba(248, 250, 255, 0.86);
+        box-shadow: 0 10px 34px rgba(10, 10, 46, 0.08);
+        backdrop-filter: blur(18px);
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-size: 1.15rem;
+        font-weight: 900;
+        letter-spacing: 0;
+      }
+      .brand-mark {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border-radius: 15px;
+        color: #fff;
+        background: linear-gradient(135deg, var(--purple), var(--gold));
+        box-shadow: 0 12px 26px rgba(124, 58, 237, 0.28);
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        color: rgba(10, 10, 46, 0.72);
+        font-size: 0.94rem;
+        font-weight: 800;
+      }
+      .nav-links a {
+        position: relative;
+        padding: 0.5rem 0;
+      }
+      .nav-links a::after {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        transform: scaleX(0);
+        border-radius: 999px;
+        background: var(--purple);
+        content: "";
+        transition: transform var(--fast);
+      }
+      .nav-links a:hover::after {
+        transform: scaleX(1);
+      }
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+      }
+      .icon-button,
+      .hamburger {
+        position: relative;
+        display: grid;
+        width: 44px;
+        height: 44px;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 15px;
+        color: var(--navy);
+        background: rgba(255, 255, 255, 0.82);
+        cursor: pointer;
+        transition: transform var(--fast), border-color var(--fast), box-shadow var(--fast), background var(--fast);
+      }
+      .icon-button:hover,
+      .hamburger:hover {
+        transform: translateY(-2px);
+        border-color: rgba(124, 58, 237, 0.34);
+        box-shadow: 0 12px 30px rgba(10, 10, 46, 0.1);
+      }
+      .badge {
+        position: absolute;
+        top: -7px;
+        right: -7px;
+        display: grid;
+        min-width: 22px;
+        height: 22px;
+        place-items: center;
+        border: 2px solid #fff;
+        border-radius: 999px;
+        color: #fff;
+        background: var(--gold);
+        font-size: 0.7rem;
+        font-weight: 900;
+      }
+      .badge.bump {
+        animation: badgeBounce 420ms ease;
+      }
+      @keyframes badgeBounce {
+        0%, 100% {
+          transform: scale(1);
+        }
+        45% {
+          transform: scale(1.28);
+        }
+      }
+      .hamburger {
+        display: none;
+      }
+      .hamburger span,
+      .hamburger span::before,
+      .hamburger span::after {
+        display: block;
+        width: 18px;
+        height: 2px;
+        border-radius: 99px;
+        background: var(--navy);
+        content: "";
+        transition: transform var(--fast), opacity var(--fast);
+      }
+      .hamburger span::before {
+        transform: translateY(-6px);
+      }
+      .hamburger span::after {
+        transform: translateY(4px);
+      }
+      body.menu-open .hamburger span {
+        background: transparent;
+      }
+      body.menu-open .hamburger span::before {
+        transform: translateY(2px) rotate(45deg);
+      }
+      body.menu-open .hamburger span::after {
+        transform: translateY(0) rotate(-45deg);
+      }
+      .search-shell {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+      .nav-search {
+        width: 0;
+        min-height: 44px;
+        border: 0;
+        border-radius: 15px;
+        outline: none;
+        background: #fff;
+        opacity: 0;
+        transition: width var(--slow), opacity var(--fast), padding var(--fast), border-color var(--fast);
+      }
+      .search-shell.open .nav-search {
+        width: min(320px, 52vw);
+        margin-right: 0.45rem;
+        padding: 0 1rem;
+        border: 1px solid var(--line);
+        opacity: 1;
+      }
+      .search-dropdown {
+        position: absolute;
+        top: calc(100% + 0.6rem);
+        right: 0;
+        z-index: 200;
+        display: none;
+        width: min(390px, 92vw);
+        max-height: 420px;
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 0.5rem;
+        background: #fff;
+        box-shadow: var(--shadow);
+      }
+      .search-dropdown.show {
+        display: grid;
+      }
+      .search-result {
+        display: grid;
+        grid-template-columns: 58px 1fr auto;
+        gap: 0.7rem;
+        align-items: center;
+        border: 0;
+        border-radius: 16px;
+        padding: 0.55rem;
+        background: transparent;
+        cursor: pointer;
+        text-align: left;
+      }
+      .search-result:hover {
+        background: var(--soft-purple);
+      }
+      .search-result img {
+        width: 58px;
+        height: 58px;
+        border-radius: 14px;
+        object-fit: cover;
+      }
+      .search-result strong {
+        display: block;
+        font-size: 0.92rem;
+      }
+      .search-result span {
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+      section {
+        scroll-margin-top: 88px;
+      }
+      .hero {
+        position: relative;
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        overflow: hidden;
+        padding: 7rem clamp(1rem, 4vw, 4rem) 2rem;
+        color: #fff;
+        background: linear-gradient(125deg, var(--navy), var(--purple), #111827, var(--gold));
+        background-size: 360% 360%;
+        animation: gradientShift 13s ease infinite;
+      }
+      @keyframes gradientShift {
+        0%, 100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+      .hero::before {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 15% 30%, rgba(255, 255, 255, 0.16), transparent 28%),
+          radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.18), transparent 30%),
+          radial-gradient(circle at 70% 82%, rgba(255, 255, 255, 0.12), transparent 26%);
+        content: "";
+      }
+      .hero-inner {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        width: min(1180px, 100%);
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
+        gap: 2rem;
+        align-items: center;
+      }
+      .hero-copy {
+        max-width: 720px;
+      }
+      .eyebrow {
+        margin: 0 0 0.7rem;
+        color: var(--purple);
+        font-size: 0.78rem;
+        font-weight: 900;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+      .hero .eyebrow {
+        color: #fed7aa;
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+      h1 {
+        margin-bottom: 1rem;
+        font-size: clamp(3.2rem, 10vw, 7.8rem);
+        line-height: 0.88;
+        letter-spacing: 0;
+      }
+      h2 {
+        margin-bottom: 0.75rem;
+        color: var(--navy);
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 1;
+        letter-spacing: 0;
+      }
+      h3 {
+        color: var(--navy);
+      }
+      .typewriter {
+        display: inline-block;
+        min-height: 1.02em;
+        color: #fff;
+      }
+      .typewriter::after {
+        margin-left: 0.15rem;
+        content: "|";
+        animation: blink 800ms steps(2) infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+      .hero-text {
+        max-width: 620px;
+        color: rgba(255, 255, 255, 0.82);
+        font-size: clamp(1rem, 2.2vw, 1.25rem);
+        line-height: 1.75;
+      }
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-top: 2rem;
+      }
+      .button,
+      .ghost-button,
+      .mini-button,
+      .danger-button {
+        position: relative;
+        isolation: isolate;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        overflow: hidden;
+        border: 0;
+        border-radius: 16px;
+        padding: 0.78rem 1.1rem;
+        cursor: pointer;
+        font-weight: 900;
+        transition: transform var(--fast), box-shadow var(--fast), background var(--fast), color var(--fast), border-color var(--fast);
+      }
+      .button {
+        color: #fff;
+        background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+        box-shadow: 0 18px 40px rgba(124, 58, 237, 0.28);
+      }
+      .button:hover,
+      .ghost-button:hover,
+      .mini-button:hover,
+      .danger-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 50px rgba(10, 10, 46, 0.16);
+      }
+      .ghost-button {
+        border: 1px solid rgba(255, 255, 255, 0.34);
+        color: #fff;
+        background: rgba(255, 255, 255, 0.12);
+      }
+      .mini-button {
+        min-height: 38px;
+        border: 1px solid var(--line);
+        color: var(--navy);
+        background: #fff;
+        font-size: 0.85rem;
+      }
+      .danger-button {
+        min-height: 38px;
+        color: #fff;
+        background: var(--red);
+        font-size: 0.85rem;
+      }
+      .ripple {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        transform: translate(-50%, -50%) scale(0);
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.48);
+        animation: ripple 560ms ease;
+        pointer-events: none;
+      }
+      @keyframes ripple {
+        to {
+          transform: translate(-50%, -50%) scale(18);
+          opacity: 0;
+        }
+      }
+      .hero-products {
+        position: relative;
+        min-height: 470px;
+      }
+      .floating-card {
+        position: absolute;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.22);
+        backdrop-filter: blur(16px);
+        animation: floatCard 4.8s ease-in-out infinite;
+      }
+      .floating-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .floating-card.one {
+        top: 20px;
+        left: 4%;
+        width: 250px;
+        height: 250px;
+      }
+      .floating-card.two {
+        right: 2%;
+        bottom: 54px;
+        width: 230px;
+        height: 270px;
+        animation-delay: -1.2s;
+      }
+      .floating-card.three {
+        bottom: 0;
+        left: 22%;
+        width: 170px;
+        height: 170px;
+        animation-delay: -2s;
+      }
+      @keyframes floatCard {
+        0%, 100% {
+          transform: translateY(0) rotate(-2deg);
+        }
+        50% {
+          transform: translateY(-18px) rotate(2deg);
+        }
+      }
+      .hero-stat {
+        position: absolute;
+        right: 18%;
+        top: 46%;
+        width: 190px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 24px;
+        padding: 1rem;
+        color: #fff;
+        background: rgba(10, 10, 46, 0.42);
+        box-shadow: var(--shadow-strong);
+        backdrop-filter: blur(14px);
+      }
+      .hero-stat strong {
+        display: block;
+        font-size: 2rem;
+      }
+      .marquee {
+        overflow: hidden;
+        border-block: 1px solid rgba(255, 255, 255, 0.18);
+        padding: 0.9rem 0;
+        color: #fff;
+        background: var(--navy);
+        white-space: nowrap;
+      }
+      .marquee-track {
+        display: inline-flex;
+        min-width: 200%;
+        gap: 2rem;
+        animation: marquee 22s linear infinite;
+        font-weight: 900;
+      }
+      @keyframes marquee {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      .section-shell {
+        padding: clamp(3.4rem, 7vw, 6rem) clamp(1rem, 4vw, 4rem);
+      }
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 1rem;
+        width: min(1180px, 100%);
+        margin: 0 auto 2rem;
+      }
+      .section-head p {
+        max-width: 650px;
+        margin-bottom: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      .underline-title {
+        position: relative;
+        display: inline-block;
+      }
+      .underline-title::after {
+        position: absolute;
+        right: 0;
+        bottom: -0.4rem;
+        left: 0;
+        height: 6px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--purple), var(--gold));
+        content: "";
+      }
+      .promo-area {
+        background: #fff;
+      }
+      .banner-frame {
+        position: relative;
+        width: min(1180px, 100%);
+        min-height: 260px;
+        overflow: hidden;
+        border-radius: 32px;
+        margin: 0 auto;
+        box-shadow: var(--shadow);
+      }
+      .promo-banner {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 1rem;
+        align-items: center;
+        padding: clamp(1.5rem, 5vw, 3rem);
+        color: #fff;
+        opacity: 0;
+        transform: translateX(24px);
+        transition: opacity 500ms ease, transform 500ms ease;
+      }
+      .promo-banner.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      .promo-banner.red {
+        background: linear-gradient(135deg, #991b1b, #ef4444);
+      }
+      .promo-banner.purple {
+        background: linear-gradient(135deg, var(--navy), var(--purple));
+      }
+      .promo-banner.gold {
+        background: linear-gradient(135deg, #92400e, var(--gold));
+      }
+      .promo-banner h2 {
+        color: #fff;
+      }
+      .promo-banner p {
+        max-width: 560px;
+        color: rgba(255, 255, 255, 0.84);
+        font-size: 1.05rem;
+        line-height: 1.7;
+      }
+      .banner-symbol {
+        display: grid;
+        width: clamp(92px, 16vw, 160px);
+        height: clamp(92px, 16vw, 160px);
+        place-items: center;
+        border-radius: 36px;
+        background: rgba(255, 255, 255, 0.16);
+        font-size: clamp(2.2rem, 6vw, 4.5rem);
+      }
+      .banner-nav {
+        position: absolute;
+        right: 1rem;
+        bottom: 1rem;
+        display: flex;
+        gap: 0.55rem;
+      }
+      .banner-nav button {
+        border-color: rgba(255, 255, 255, 0.42);
+        color: #fff;
+        background: rgba(255, 255, 255, 0.14);
+      }
+      .trust-grid {
+        display: grid;
+        width: min(1180px, 100%);
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin: 1.4rem auto 0;
+      }
+      .trust-card,
+      .coupon-card,
+      .product-card,
+      .review-card,
+      .value-card,
+      .job-card,
+      .team-card,
+      .info-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: #fff;
+        box-shadow: 0 12px 36px rgba(10, 10, 46, 0.06);
+        transition: transform var(--fast), box-shadow var(--fast), border-color var(--fast);
+      }
+      .trust-card:hover,
+      .coupon-card:hover,
+      .product-card:hover,
+      .review-card:hover,
+      .value-card:hover,
+      .job-card:hover,
+      .team-card:hover,
+      .info-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(124, 58, 237, 0.24);
+        box-shadow: var(--shadow);
+      }
+      .trust-card {
+        display: grid;
+        gap: 0.55rem;
+        padding: 1.1rem;
+      }
+      .trust-icon {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        border-radius: 16px;
+        background: var(--soft-purple);
+        font-size: 1.4rem;
+      }
+      .flash-timer {
+        width: min(1180px, 100%);
+        margin: 1.4rem auto 0;
+        border: 1px solid rgba(124, 58, 237, 0.16);
+        border-radius: 28px;
+        padding: 1.2rem;
+        background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(245, 158, 11, 0.12));
+        text-align: center;
+      }
+      .timer-digits {
+        margin-top: 0.35rem;
+        color: var(--purple);
+        font-size: clamp(2rem, 5vw, 3.6rem);
+        font-weight: 900;
+      }
+      .deals-section {
+        background: linear-gradient(180deg, #fff, var(--white));
+      }
+      .pulse-title {
+        animation: pulseText 1.6s ease-in-out infinite;
+      }
+      @keyframes pulseText {
+        50% {
+          transform: scale(1.02);
+          color: var(--purple);
+        }
+      }
+      .coupon-grid {
+        display: grid;
+        width: min(1180px, 100%);
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin: 0 auto;
+      }
+      .coupon-card {
+        position: relative;
+        overflow: hidden;
+        padding: 1.3rem;
+      }
+      .coupon-code {
+        display: inline-flex;
+        margin: 0.6rem 0;
+        border: 1px dashed var(--purple);
+        border-radius: 16px;
+        padding: 0.55rem 0.8rem;
+        color: var(--purple);
+        background: var(--soft-purple);
+        font-weight: 900;
+      }
+      .copied-check {
+        display: inline-flex;
+        transform: scale(0);
+        color: var(--green);
+        font-weight: 900;
+        transition: transform var(--fast);
+      }
+      .copied-check.show {
+        transform: scale(1);
+      }
+      .game-grid {
+        display: grid;
+        width: min(1180px, 100%);
+        grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+        gap: 1.3rem;
+        margin: 0 auto;
+        align-items: start;
+      }
+      .wheel-card,
+      .scratch-zone {
+        border: 1px solid var(--line);
+        border-radius: 32px;
+        padding: clamp(1rem, 3vw, 1.5rem);
+        background: #fff;
+        box-shadow: var(--shadow);
+      }
+      .wheel-wrap {
+        display: grid;
+        justify-items: center;
+        gap: 1rem;
+      }
+      .wheel {
+        position: relative;
+        width: min(320px, 78vw);
+        aspect-ratio: 1;
+        border: 10px solid #fff;
+        border-radius: 50%;
+        background: conic-gradient(
+          #7c3aed 0 45deg,
+          #f59e0b 45deg 90deg,
+          #10b981 90deg 135deg,
+          #ef4444 135deg 180deg,
+          #0ea5e9 180deg 225deg,
+          #a855f7 225deg 270deg,
+          #f97316 270deg 315deg,
+          #111827 315deg 360deg
+        );
+        box-shadow: 0 24px 70px rgba(10, 10, 46, 0.2);
+        transition: transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+      }
+      .wheel::before {
+        position: absolute;
+        inset: 50% auto auto 50%;
+        display: grid;
+        width: 74px;
+        height: 74px;
+        transform: translate(-50%, -50%);
+        place-items: center;
+        border-radius: 50%;
+        color: var(--navy);
+        background: #fff;
+        content: "SPIN";
+        font-size: 0.9rem;
+        font-weight: 900;
+        box-shadow: 0 10px 24px rgba(10, 10, 46, 0.16);
+      }
+      .wheel-pointer {
+        width: 0;
+        height: 0;
+        border-right: 18px solid transparent;
+        border-bottom: 34px solid var(--gold);
+        border-left: 18px solid transparent;
+        filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.22));
+      }
+      .wheel-labels {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.4rem;
+        width: 100%;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+      .scratch-cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.9rem;
+      }
+      .scratch-card {
+        min-height: 145px;
+        border: 0;
+        border-radius: 24px;
+        padding: 1rem;
+        color: #fff;
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0)),
+          #9ca3af;
+        cursor: pointer;
+        font-weight: 900;
+        transition: transform var(--fast), background var(--slow);
+      }
+      .scratch-card.revealed {
+        color: var(--navy);
+        background: linear-gradient(135deg, #fef3c7, #ede9fe);
+      }
+      .filter-bar {
+        display: grid;
+        width: min(1180px, 100%);
+        grid-template-columns: 1.5fr repeat(2, 1fr);
+        gap: 0.8rem;
+        margin: 0 auto 1rem;
+      }
+      .filter-field,
+      .checkout-field,
+      .contact-field {
+        display: grid;
+        gap: 0.38rem;
+        color: var(--muted);
+        font-size: 0.86rem;
+        font-weight: 800;
+      }
+      .filter-field input,
+      .filter-field select,
+      .checkout-field input,
+      .checkout-field textarea,
+      .checkout-field select,
+      .contact-field input,
+      .contact-field textarea,
+      .contact-field select,
+      .promo-input {
+        width: 100%;
+        min-height: 48px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        outline: none;
+        padding: 0 0.9rem;
+        color: var(--navy);
+        background: #fff;
+        transition: border-color var(--fast), box-shadow var(--fast);
+      }
+      .filter-field input:focus,
+      .filter-field select:focus,
+      .checkout-field input:focus,
+      .checkout-field textarea:focus,
+      .checkout-field select:focus,
+      .contact-field input:focus,
+      .contact-field textarea:focus,
+      .contact-field select:focus,
+      .promo-input:focus {
+        border-color: var(--purple);
+        box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
+      }
+      .filter-field textarea,
+      .checkout-field textarea,
+      .contact-field textarea {
+        min-height: 120px;
+        padding-top: 0.8rem;
+        resize: vertical;
+      }
+      .filter-toggles {
+        display: flex;
+        width: min(1180px, 100%);
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+        margin: 0 auto 1.4rem;
+      }
+      .toggle-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.6rem 0.8rem;
+        background: #fff;
+        color: var(--muted);
+        font-weight: 800;
+      }
+      .product-grid {
+        display: grid;
+        width: min(1180px, 100%);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
+        margin: 0 auto;
+      }
+      .product-card {
+        position: relative;
+        overflow: hidden;
+      }
+      .product-card.slide-in {
+        animation: cardSlide 460ms ease both;
+      }
+      @keyframes cardSlide {
+        from {
+          transform: translateY(24px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+      .product-media {
+        position: relative;
+        aspect-ratio: 1.05;
+        overflow: hidden;
+        background: var(--soft-purple);
+      }
+      .product-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform var(--slow);
+      }
+      .product-card:hover .product-media img {
+        transform: scale(1.07);
+      }
+      .sale-badge,
+      .stock-badge,
+      .fast-badge,
+      .verified-badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0.34rem 0.56rem;
+        color: #fff;
+        font-size: 0.72rem;
+        font-weight: 900;
+      }
+      .sale-badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: var(--red);
+      }
+      .fast-badge {
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+        background: var(--purple);
+      }
+      .stock-badge {
+        color: var(--navy);
+        background: #dcfce7;
+      }
+      .stock-badge.low {
+        background: #fef3c7;
+      }
+      .product-body {
+        display: grid;
+        gap: 0.7rem;
+        padding: 1rem;
+      }
+      .product-top,
+      .product-actions,
+      .price-row,
+      .cart-row,
+      .summary-row,
+      .review-top,
+      .job-summary,
+      .step-tabs,
+      .form-actions {
+        display: flex;
+        align-items: center;
+      }
+      .product-top,
+      .price-row,
+      .summary-row,
+      .job-summary {
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .product-category {
+        color: var(--purple);
+        font-size: 0.75rem;
+        font-weight: 900;
+      }
+      .product-body h3 {
+        margin: 0;
+        min-height: 2.8rem;
+        font-size: 1rem;
+        line-height: 1.35;
+      }
+      .product-body p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.88rem;
+        line-height: 1.55;
+      }
+      .stars {
+        color: var(--gold);
+        font-size: 0.88rem;
+        font-weight: 900;
+      }
+      .old-price {
+        color: var(--muted);
+        text-decoration: line-through;
+      }
+      .new-price {
+        color: var(--navy);
+        font-size: 1.2rem;
+        font-weight: 900;
+      }
+      .product-actions {
+        gap: 0.5rem;
+      }
+      .product-actions .button {
+        flex: 1;
+      }
+      .heart-button.active,
+      #wishlistToggle.active {
+        color: #fff;
+        border-color: #ec4899;
+        background: #ec4899;
+      }
+      .quick-layer {
+        position: absolute;
+        inset: auto 12px 12px 12px;
+        transform: translateY(14px);
+        border-radius: 18px;
+        padding: 0.8rem;
+        color: #fff;
+        background: rgba(10, 10, 46, 0.82);
+        opacity: 0;
+        backdrop-filter: blur(14px);
+        transition: opacity var(--fast), transform var(--fast);
+      }
+      .product-card:hover .quick-layer {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .load-more-wrap {
+        display: grid;
+        place-items: center;
+        margin-top: 1.5rem;
+      }
+      .panel,
+      .modal {
+        position: fixed;
+        z-index: 300;
+        background: #fff;
+        box-shadow: var(--shadow-strong);
+      }
+      .panel {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        width: min(460px, 100vw);
+        transform: translateX(110%);
+        flex-direction: column;
+        transition: transform var(--slow);
+      }
+      .panel.open {
+        transform: translateX(0);
+      }
+      .panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        border-bottom: 1px solid var(--line);
+        padding: 1rem;
+      }
+      .panel-body {
+        flex: 1;
+        overflow: auto;
+        padding: 1rem;
+      }
+      .panel-footer {
+        display: grid;
+        gap: 0.8rem;
+        border-top: 1px solid var(--line);
+        padding: 1rem;
+      }
+      .cart-row,
+      .wishlist-row {
+        display: grid;
+        grid-template-columns: 78px 1fr auto;
+        gap: 0.8rem;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 0.6rem;
+        margin-bottom: 0.75rem;
+      }
+      .cart-row img,
+      .wishlist-row img {
+        width: 78px;
+        height: 78px;
+        border-radius: 18px;
+        object-fit: cover;
+      }
+      .cart-row h4,
+      .wishlist-row h4 {
+        margin: 0 0 0.25rem;
+        color: var(--navy);
+      }
+      .qty-control {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        margin-top: 0.4rem;
+      }
+      .qty-control button {
+        display: grid;
+        width: 30px;
+        height: 30px;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: #fff;
+        cursor: pointer;
+      }
+      .empty-state {
+        display: grid;
+        place-items: center;
+        min-height: 280px;
+        border: 1px dashed var(--line);
+        border-radius: 26px;
+        padding: 1.2rem;
+        color: var(--muted);
+        text-align: center;
+      }
+      .empty-illustration {
+        display: grid;
+        width: 86px;
+        height: 86px;
+        place-items: center;
+        border-radius: 28px;
+        margin-bottom: 0.8rem;
+        background: var(--soft-purple);
+        font-size: 2rem;
+      }
+      .overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 250;
+        visibility: hidden;
+        background: rgba(10, 10, 46, 0.45);
+        opacity: 0;
+        transition: opacity var(--fast), visibility var(--fast);
+      }
+      .overlay.show {
+        visibility: visible;
+        opacity: 1;
+      }
+      .modal {
+        top: 50%;
+        left: 50%;
+        visibility: hidden;
+        width: min(960px, calc(100vw - 1.5rem));
+        max-height: calc(100vh - 1.5rem);
+        overflow: auto;
+        transform: translate(-50%, -45%) scale(0.96);
+        border-radius: 32px;
+        opacity: 0;
+        transition: transform var(--fast), opacity var(--fast), visibility var(--fast);
+      }
+      .modal.open {
+        visibility: visible;
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+      .modal-close {
+        position: sticky;
+        top: 0.8rem;
+        left: calc(100% - 4rem);
+        z-index: 2;
+        margin: 0.8rem 0.8rem 0 auto;
+      }
+      .quick-view-grid {
+        display: grid;
+        grid-template-columns: minmax(280px, 0.95fr) minmax(0, 1.05fr);
+        gap: 1.2rem;
+        padding: 0 1.2rem 1.2rem;
+      }
+      .gallery-main img {
+        width: 100%;
+        aspect-ratio: 1;
+        border-radius: 26px;
+        object-fit: cover;
+      }
+      .gallery-thumbs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.55rem;
+        margin-top: 0.55rem;
+      }
+      .gallery-thumbs button {
+        overflow: hidden;
+        border: 2px solid transparent;
+        border-radius: 18px;
+        padding: 0;
+        background: transparent;
+        cursor: pointer;
+      }
+      .gallery-thumbs button.active {
+        border-color: var(--purple);
+      }
+      .gallery-thumbs img {
+        width: 100%;
+        aspect-ratio: 1.2;
+        object-fit: cover;
+      }
+      .variant-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin: 1rem 0;
+      }
+      .variant-row button {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.55rem 0.8rem;
+        background: #fff;
+        cursor: pointer;
+        font-weight: 800;
+      }
+      .variant-row button.active {
+        border-color: var(--purple);
+        color: var(--purple);
+        background: var(--soft-purple);
+      }
+      .related-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.6rem;
+        margin-top: 1rem;
+      }
+      .related-item {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 0.5rem;
+        background: #fff;
+        cursor: pointer;
+        text-align: left;
+      }
+      .related-item img {
+        width: 100%;
+        aspect-ratio: 1.4;
+        border-radius: 14px;
+        object-fit: cover;
+      }
+      .checkout-modal {
+        width: min(1160px, calc(100vw - 1rem));
+      }
+      .checkout-wrap {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+        gap: 1rem;
+        padding: 0 1.2rem 1.2rem;
+      }
+      .checkout-main,
+      .checkout-summary,
+      .success-page {
+        border: 1px solid var(--line);
+        border-radius: 26px;
+        padding: 1rem;
+        background: #fff;
+      }
+      .step-tabs {
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      .step-pill {
+        flex: 1;
+        border-radius: 999px;
+        padding: 0.7rem 0.5rem;
+        background: #edf0f7;
+        color: var(--muted);
+        font-size: 0.82rem;
+        font-weight: 900;
+        text-align: center;
+      }
+      .step-pill.active {
+        color: #fff;
+        background: var(--purple);
+      }
+      .checkout-step {
+        display: none;
+      }
+      .checkout-step.active {
+        display: block;
+      }
+      .checkout-grid,
+      .contact-grid,
+      .application-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.8rem;
+      }
+      .field-wide {
+        grid-column: 1 / -1;
+      }
+      .field-error {
+        min-height: 1rem;
+        color: var(--red);
+        font-size: 0.78rem;
+      }
+      .invalid input,
+      .invalid textarea,
+      .invalid select {
+        border-color: var(--red);
+      }
+      .option-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+      }
+      .option-card {
+        display: grid;
+        gap: 0.35rem;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 1rem;
+        cursor: pointer;
+      }
+      .option-card:has(input:checked) {
+        border-color: var(--purple);
+        background: var(--soft-purple);
+      }
+      .form-actions {
+        justify-content: space-between;
+        gap: 0.8rem;
+        margin-top: 1rem;
+      }
+      .loader-dot {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-right: 0.5rem;
+        border: 3px solid rgba(255, 255, 255, 0.35);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 760ms linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .success-page {
+        display: none;
+        min-height: 420px;
+        place-items: center;
+        text-align: center;
+      }
+      .success-page.show {
+        display: grid;
+      }
+      .success-icon {
+        display: grid;
+        width: 92px;
+        height: 92px;
+        place-items: center;
+        border-radius: 32px;
+        margin: 0 auto 1rem;
+        color: #fff;
+        background: var(--green);
+        font-size: 2.4rem;
+      }
+      .reviews-layout {
+        display: grid;
+        width: min(1180px, 100%);
+        grid-template-columns: minmax(260px, 330px) minmax(0, 1fr);
+        gap: 1rem;
+        margin: 0 auto;
+      }
+      .rating-card {
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        padding: 1.2rem;
+        background: #fff;
+        box-shadow: var(--shadow);
+      }
+      .rating-big {
+        color: var(--navy);
+        font-size: 4rem;
+        font-weight: 900;
+      }
+      .bar-row {
+        display: grid;
+        grid-template-columns: 44px 1fr 32px;
+        gap: 0.5rem;
+        align-items: center;
+        margin: 0.6rem 0;
+        color: var(--muted);
+        font-size: 0.84rem;
+        font-weight: 800;
+      }
+      .bar {
+        height: 9px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #edf0f7;
+      }
+      .bar span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--gold);
+      }
+      .reviews-tools {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .reviews-list {
+        display: grid;
+        gap: 0.9rem;
+      }
+      .review-card {
+        padding: 1rem;
+      }
+      .review-top {
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .avatar {
+        display: grid;
+        width: 46px;
+        height: 46px;
+        place-items: center;
+        border-radius: 16px;
+        color: #fff;
+        background: var(--purple);
+        font-weight: 900;
+      }
+      .review-person {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .verified-badge {
+        color: var(--green);
+        background: #dcfce7;
+      }
+      .helpful-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        align-items: center;
+        color: var(--muted);
+      }
+      .careers-hero {
+        width: min(1180px, 100%);
+        margin: 0 auto 1.5rem;
+        border-radius: 36px;
+        padding: clamp(2rem, 6vw, 4rem);
+        color: #fff;
+        background: linear-gradient(135deg, var(--navy), var(--purple));
+        box-shadow: var(--shadow);
+      }
+      .careers-hero h2 {
+        color: #fff;
+      }
+      .values-grid,
+      .team-grid,
+      .logo-row {
+        display: grid;
+        width: min(1180px, 100%);
+        gap: 1rem;
+        margin: 0 auto 1.5rem;
+      }
+      .values-grid,
+      .team-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .value-card,
+      .team-card,
+      .info-card {
+        padding: 1rem;
+      }
+      .life-grid {
+        display: grid;
+        width: min(1180px, 100%);
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin: 0 auto 1.5rem;
+        align-items: center;
+      }
+      .photo-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+      }
+      .photo-grid img {
+        width: 100%;
+        aspect-ratio: 1.25;
+        border-radius: 24px;
+        object-fit: cover;
+      }
+      .jobs-list {
+        display: grid;
+        width: min(1180px, 100%);
+        gap: 0.85rem;
+        margin: 0 auto;
+      }
+      .job-card {
+        overflow: hidden;
+      }
+      .job-toggle {
+        width: 100%;
+        border: 0;
+        padding: 1rem;
+        background: #fff;
+        cursor: pointer;
+        text-align: left;
+      }
+      .job-detail {
+        display: none;
+        border-top: 1px solid var(--line);
+        padding: 0 1rem 1rem;
+      }
+      .job-card.open .job-detail {
+        display: block;
+      }
+      .about-grid,
+      .contact-grid-main {
+        display: grid;
+        width: min(1180px, 100%);
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 0.82fr);
+        gap: 1rem;
+        margin: 0 auto 1.5rem;
+        align-items: start;
+      }
+      .story-card,
+      .contact-card,
+      .map-card {
+        border: 1px solid var(--line);
+        border-radius: 32px;
+        padding: 1.2rem;
+        background: #fff;
+        box-shadow: var(--shadow);
+      }
+      .counter-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.75rem;
+        margin-top: 1rem;
+      }
+      .counter-box {
+        border-radius: 22px;
+        padding: 1rem;
+        background: var(--soft-purple);
+        text-align: center;
+      }
+      .counter-box strong {
+        display: block;
+        color: var(--purple);
+        font-size: 1.8rem;
+        font-weight: 900;
+      }
+      .team-card img {
+        width: 88px;
+        height: 88px;
+        border-radius: 28px;
+        object-fit: cover;
+      }
+      .logo-row {
+        grid-template-columns: repeat(5, 1fr);
+      }
+      .brand-logo {
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 1rem;
+        background: #fff;
+        color: var(--muted);
+        font-weight: 900;
+        text-align: center;
+        transition: transform var(--fast), color var(--fast);
+      }
+      .brand-logo:hover {
+        transform: translateY(-4px);
+        color: var(--purple);
+      }
+      .contact-details {
+        display: grid;
+        gap: 0.8rem;
+      }
+      .social-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+      .social-links a {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0.6rem 0.8rem;
+        color: var(--muted);
+        font-weight: 900;
+      }
+      .social-links a:hover {
+        color: #fff;
+        background: var(--purple);
+      }
+      .map-card {
+        display: grid;
+        min-height: 260px;
+        place-items: center;
+        color: var(--muted);
+        background:
+          linear-gradient(90deg, rgba(10, 10, 46, 0.05) 1px, transparent 1px),
+          linear-gradient(rgba(10, 10, 46, 0.05) 1px, transparent 1px),
+          #fff;
+        background-size: 26px 26px;
+        text-align: center;
+      }
+      .footer {
+        padding: 3rem clamp(1rem, 4vw, 4rem) 1.2rem;
+        color: rgba(255, 255, 255, 0.78);
+        background: var(--navy);
+      }
+      .footer-grid {
+        display: grid;
+        width: min(1180px, 100%);
+        grid-template-columns: 1.2fr repeat(3, 1fr);
+        gap: 1.5rem;
+        margin: 0 auto;
+      }
+      .footer h3,
+      .footer strong {
+        color: #fff;
+      }
+      .footer a {
+        display: block;
+        margin: 0.5rem 0;
+        color: rgba(255, 255, 255, 0.74);
+      }
+      .newsletter {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+      }
+      .newsletter input {
+        min-width: 0;
+        min-height: 44px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 15px;
+        padding: 0 0.8rem;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .copyright {
+        width: min(1180px, 100%);
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        margin: 2rem auto 0;
+        padding-top: 1rem;
+        text-align: center;
+      }
+      .toast-zone {
+        position: fixed;
+        right: 1rem;
+        bottom: 1rem;
+        z-index: 800;
+        display: grid;
+        gap: 0.6rem;
+      }
+      .toast {
+        min-width: min(320px, calc(100vw - 2rem));
+        transform: translateX(120%);
+        border-radius: 18px;
+        padding: 0.85rem 1rem;
+        color: #fff;
+        background: var(--navy);
+        box-shadow: var(--shadow);
+        animation: toastIn 3s ease forwards;
+      }
+      @keyframes toastIn {
+        0% {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+        12%, 86% {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+      }
+      .confetti-piece {
+        position: fixed;
+        z-index: 1200;
+        width: 9px;
+        height: 14px;
+        border-radius: 3px;
+        pointer-events: none;
+        animation: confettiFall 1100ms ease forwards;
+      }
+      @keyframes confettiFall {
+        to {
+          transform: translateY(110vh) rotate(540deg);
+          opacity: 0;
+        }
+      }
+      .reveal {
+        transform: translateY(34px);
+        opacity: 0;
+        transition: transform 720ms ease, opacity 720ms ease;
+      }
+      .reveal.visible {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      .no-results {
+        grid-column: 1 / -1;
+        border: 1px dashed var(--line);
+        border-radius: 28px;
+        padding: 2rem;
+        color: var(--muted);
+        background: #fff;
+        text-align: center;
+      }
+      @media (max-width: 1060px) {
+        .nav-links {
+          position: fixed;
+          top: 78px;
+          right: 1rem;
+          left: 1rem;
+          z-index: 180;
+          display: grid;
+          transform: translateY(-16px);
+          visibility: hidden;
+          border: 1px solid var(--line);
+          border-radius: 28px;
+          padding: 1rem;
+          background: #fff;
+          box-shadow: var(--shadow);
+          opacity: 0;
+          transition: transform var(--fast), opacity var(--fast), visibility var(--fast);
+        }
+        body.menu-open .nav-links {
+          transform: translateY(0);
+          visibility: visible;
+          opacity: 1;
+        }
+        .hamburger {
+          display: grid;
+        }
+        .hero-inner,
+        .game-grid,
+        .reviews-layout,
+        .life-grid,
+        .about-grid,
+        .contact-grid-main,
+        .checkout-wrap {
+          grid-template-columns: 1fr;
+        }
+        .checkout-summary {
+          position: static;
+        }
+        .product-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .trust-grid,
+        .values-grid,
+        .team-grid,
+        .footer-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 760px) {
+        .site-header {
+          padding: 0.7rem 1rem;
+        }
+        .brand span:last-child {
+          display: none;
+        }
+        .search-shell.open {
+          position: fixed;
+          right: 1rem;
+          left: 1rem;
+          top: 76px;
+          z-index: 220;
+          border-radius: 22px;
+          padding: 0.6rem;
+          background: #fff;
+          box-shadow: var(--shadow);
+        }
+        .search-shell.open .nav-search {
+          width: 100%;
+        }
+        .hero {
+          min-height: auto;
+          padding-top: 8rem;
+        }
+        .hero-products {
+          min-height: 320px;
+        }
+        .floating-card.one {
+          width: 190px;
+          height: 190px;
+        }
+        .floating-card.two {
+          width: 170px;
+          height: 190px;
+        }
+        .floating-card.three,
+        .hero-stat {
+          display: none;
+        }
+        .section-head,
+        .promo-banner,
+        .filter-bar,
+        .checkout-grid,
+        .contact-grid,
+        .application-grid,
+        .option-grid,
+        .quick-view-grid {
+          grid-template-columns: 1fr;
+        }
+        .section-head {
+          align-items: start;
+          flex-direction: column;
+        }
+        .coupon-grid,
+        .trust-grid,
+        .product-grid,
+        .scratch-cards,
+        .counter-grid,
+        .logo-row,
+        .footer-grid {
+          grid-template-columns: 1fr;
+        }
+        .panel {
+          width: 100vw;
+        }
+        .cart-row,
+        .wishlist-row {
+          grid-template-columns: 70px 1fr;
+        }
+        .cart-row .danger-button,
+        .wishlist-row .danger-button {
+          grid-column: 1 / -1;
+        }
+        .newsletter {
+          flex-direction: column;
+        }
+      }
+    </style>
   </head>
   <body>
-    <header class="site-header">
+    <div class="page-loader" id="pageLoader" aria-label="Loading NovaCart">
+      <div class="loader-logo">N</div>
+    </div>
+    <header class="site-header" id="siteHeader">
       <a class="brand" href="#home" aria-label="NovaCart home">
         <span class="brand-mark">N</span>
         <span>NovaCart</span>
       </a>
-
-      <nav class="nav-links" aria-label="Primary navigation">
+      <nav class="nav-links" id="navLinks" aria-label="Primary navigation">
+        <a href="#home">Home</a>
         <a href="#shop">Shop</a>
         <a href="#deals">Deals</a>
-        <a href="#checkout">Checkout</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#careers">Careers</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
       </nav>
-
       <div class="header-actions">
-        <button class="icon-button" id="wishlistButton" type="button" aria-label="View wishlist">
-          <span aria-hidden="true">♡</span>
+        <div class="search-shell" id="searchShell">
+          <input class="nav-search" id="navSearchInput" type="search" placeholder="Search NovaCart..." autocomplete="off" />
+          <button class="icon-button" id="searchToggle" type="button" aria-label="Open search">⌕</button>
+          <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
+        <button class="icon-button" id="wishlistButton" type="button" aria-label="Open wishlist">
+          ♡
           <span class="badge" id="wishlistCount">0</span>
         </button>
         <button class="icon-button" id="cartButton" type="button" aria-label="Open cart">
-          <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20">
-            <path d="M6.2 6h14l-1.5 8.2a2 2 0 0 1-2 1.6H8.4a2 2 0 0 1-2-1.7L5.2 3.8H2.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="9" cy="20" r="1.4" fill="currentColor"/>
-            <circle cx="17" cy="20" r="1.4" fill="currentColor"/>
-          </svg>
+          🛒
           <span class="badge" id="cartCount">0</span>
         </button>
+        <button class="hamburger" id="hamburger" type="button" aria-label="Open mobile menu"><span></span></button>
       </div>
     </header>
-
     <main>
+      <!-- ==================== HOME PAGE / HERO SECTION ==================== -->
       <section class="hero" id="home">
-        <div class="hero-content">
-          <p class="eyebrow">Curated tech, home and lifestyle essentials</p>
-          <h1>NovaCart</h1>
-          <p class="hero-copy">A fast, polished shopping experience with smart filters, instant cart updates, secure checkout flow and order confirmation built in.</p>
-          <div class="hero-actions">
-            <a class="primary-action" href="#shop">Shop collection</a>
-            <a class="secondary-action" href="#deals">View today&apos;s deals</a>
+        <div class="hero-inner">
+          <div class="hero-copy reveal">
+            <p class="eyebrow">Blink-fast shopping, premium picks</p>
+            <h1><span class="typewriter" id="typewriterText">Shop Smarter</span></h1>
+            <p class="hero-text">NovaCart brings groceries-speed convenience to premium everyday shopping. Search, add, checkout and smile in just a few taps.</p>
+            <div class="hero-actions">
+              <a class="button" href="#shop">Shop Now</a>
+              <a class="ghost-button" href="#deals">Today's Deals</a>
+            </div>
+          </div>
+          <div class="hero-products reveal">
+            <div class="floating-card one"><img src="https://picsum.photos/seed/novacart-headphones/600/600" alt="Premium headphones" /></div>
+            <div class="floating-card two"><img src="https://picsum.photos/seed/novacart-bag/600/700" alt="Lifestyle product" /></div>
+            <div class="floating-card three"><img src="https://picsum.photos/seed/novacart-watch/400/400" alt="Smart watch" /></div>
+            <div class="hero-stat"><strong id="heroCount" data-count="10000">0</strong><span>happy customers</span></div>
           </div>
         </div>
       </section>
-
-      <section class="trust-strip" aria-label="Store benefits">
-        <div>
-          <strong>Free shipping</strong>
-          <span>Orders over $75</span>
+      <div class="marquee" aria-label="Store highlights">
+        <div class="marquee-track">
+          <span>FREE SHIPPING OVER ₹999 • 30-DAY RETURNS • 10,000+ HAPPY CUSTOMERS • SECURE PAYMENTS •</span>
+          <span>FREE SHIPPING OVER ₹999 • 30-DAY RETURNS • 10,000+ HAPPY CUSTOMERS • SECURE PAYMENTS •</span>
+          <span>FREE SHIPPING OVER ₹999 • 30-DAY RETURNS • 10,000+ HAPPY CUSTOMERS • SECURE PAYMENTS •</span>
         </div>
-        <div>
-          <strong>30-day returns</strong>
-          <span>Simple replacements</span>
+      </div>
+      <!-- ==================== MARKETING BANNERS / HYPE SECTION ==================== -->
+      <section class="section-shell promo-area reveal" id="banners">
+        <div class="banner-frame">
+          <article class="promo-banner red active">
+            <div>
+              <p class="eyebrow">Flash Sale</p>
+              <h2>40% off Electronics today only.</h2>
+              <p>Grab fast-selling gadgets, headphones, keyboards and more before midnight.</p>
+            </div>
+            <div class="banner-symbol">⚡</div>
+          </article>
+          <article class="promo-banner purple">
+            <div>
+              <p class="eyebrow">New Arrivals</p>
+              <h2>Premium lifestyle products just dropped.</h2>
+              <p>Fresh products for home, fashion, travel, books and smart living.</p>
+            </div>
+            <div class="banner-symbol">✨</div>
+          </article>
+          <article class="promo-banner gold">
+            <div>
+              <p class="eyebrow">Refer A Friend</p>
+              <h2>Both get ₹200 off your next order.</h2>
+              <p>Invite your people to NovaCart and unlock more savings together.</p>
+            </div>
+            <div class="banner-symbol">🎁</div>
+          </article>
+          <div class="banner-nav">
+            <button class="icon-button" id="bannerPrev" type="button" aria-label="Previous banner">‹</button>
+            <button class="icon-button" id="bannerNext" type="button" aria-label="Next banner">›</button>
+          </div>
         </div>
-        <div>
-          <strong>Secure checkout</strong>
-          <span>Card, UPI and wallet ready</span>
+        <div class="trust-grid">
+          <div class="trust-card reveal"><span class="trust-icon">🚚</span><strong>Free Shipping</strong><span>Over ₹999</span></div>
+          <div class="trust-card reveal"><span class="trust-icon">🔒</span><strong>Secure Checkout</strong><span>Safe payments</span></div>
+          <div class="trust-card reveal"><span class="trust-icon">↩</span><strong>Easy Returns</strong><span>30-day support</span></div>
+          <div class="trust-card reveal"><span class="trust-icon">💬</span><strong>24/7 Support</strong><span>Always online</span></div>
         </div>
-        <div>
-          <strong>Live support</strong>
-          <span>Every day, 9am-9pm</span>
+        <div class="flash-timer reveal">
+          <strong>Flash sale ends in</strong>
+          <div class="timer-digits" id="flashCountdown">24:00:00</div>
         </div>
       </section>
-
-      <section class="shop-layout" id="shop">
-        <aside class="filters" aria-label="Product filters">
-          <div class="filter-heading">
-            <h2>Shop</h2>
-            <button class="text-button" id="clearFilters" type="button">Reset</button>
+      <!-- ==================== DISCOUNT HYPE / COUPON SECTION ==================== -->
+      <section class="section-shell deals-section" id="deals">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">Coupons</p>
+            <h2 class="pulse-title">DEALS OF THE DAY</h2>
           </div>
-
-          <label class="field">
-            <span>Search products</span>
-            <input id="searchInput" type="search" placeholder="Search headphones, bags..." autocomplete="off" />
+          <p>Copy a code, use it in cart or checkout, and watch your total update instantly.</p>
+        </div>
+        <div class="coupon-grid" id="couponGrid"></div>
+      </section>
+      <!-- ==================== INTERACTIVE DISCOUNT GAME ==================== -->
+      <section class="section-shell" id="discount-game">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">Lucky rewards</p>
+            <h2>Spin to Win Your Discount!</h2>
+          </div>
+          <p>One spin per session. Scratch one of three cards for a surprise reward.</p>
+        </div>
+        <div class="game-grid">
+          <div class="wheel-card reveal">
+            <div class="wheel-wrap">
+              <div class="wheel-pointer" aria-hidden="true"></div>
+              <div class="wheel" id="discountWheel" aria-label="Discount wheel"></div>
+              <button class="button" id="spinButton" type="button">SPIN</button>
+              <p id="spinMessage">Tap spin and try your luck.</p>
+              <div class="wheel-labels" id="wheelLabels"></div>
+            </div>
+          </div>
+          <div class="scratch-zone reveal">
+            <p class="eyebrow">Scratch card</p>
+            <h3>Choose one card</h3>
+            <div class="scratch-cards" id="scratchCards"></div>
+          </div>
+        </div>
+      </section>
+      <!-- ==================== SHOP / PRODUCT SECTION ==================== -->
+      <section class="section-shell" id="shop">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">Products</p>
+            <h2 class="underline-title">Shop</h2>
+          </div>
+          <p id="productResultCount">Showing products</p>
+        </div>
+        <div class="filter-bar reveal">
+          <label class="filter-field">
+            <span>Search</span>
+            <input id="shopSearchInput" type="search" placeholder="Search products..." autocomplete="off" />
           </label>
-
-          <label class="field">
+          <label class="filter-field">
             <span>Category</span>
-            <select id="categorySelect"></select>
+            <select id="categoryFilter"></select>
           </label>
-
-          <label class="field">
+          <label class="filter-field">
             <span>Sort by</span>
-            <select id="sortSelect">
+            <select id="sortFilter">
               <option value="featured">Featured</option>
-              <option value="priceLow">Price: low to high</option>
-              <option value="priceHigh">Price: high to low</option>
-              <option value="rating">Highest rated</option>
+              <option value="low">Price Low-High</option>
+              <option value="high">Price High-Low</option>
+              <option value="rated">Highest Rated</option>
+              <option value="new">New Arrivals</option>
             </select>
           </label>
-
-          <label class="range-field">
-            <span>Max price: <strong id="priceLabel">$500</strong></span>
-            <input id="priceRange" type="range" min="40" max="500" value="500" />
+        </div>
+        <div class="filter-toggles reveal">
+          <label class="filter-field" style="min-width: min(420px, 100%);">
+            <span>Max price: <strong id="priceRangeLabel">₹5000</strong></span>
+            <input id="priceRange" type="range" min="200" max="5000" value="5000" />
           </label>
-
-          <div class="availability">
-            <label><input id="stockOnly" type="checkbox" /> In-stock only</label>
-            <label><input id="fastDeliveryOnly" type="checkbox" /> Fast delivery</label>
-          </div>
-        </aside>
-
-        <section class="catalog" aria-live="polite">
-          <div class="catalog-top">
-            <div>
-              <p class="eyebrow">Premium collection</p>
-              <h2 id="catalogTitle">Featured products</h2>
-            </div>
-            <p id="resultCount">0 products</p>
-          </div>
-          <div class="product-grid" id="productGrid"></div>
-        </section>
-      </section>
-
-      <section class="deals-band" id="deals">
-        <div>
-          <p class="eyebrow">Member deal</p>
-          <h2>Use code <span>NOVA15</span> for 15% off selected orders.</h2>
+          <label class="toggle-pill"><input id="stockOnlyFilter" type="checkbox" /> In Stock Only</label>
+          <label class="toggle-pill"><input id="saleOnlyFilter" type="checkbox" /> On Sale</label>
+          <label class="toggle-pill"><input id="fastOnlyFilter" type="checkbox" /> Fast Delivery</label>
         </div>
-        <button class="secondary-action" id="copyCodeButton" type="button">Copy code</button>
+        <div class="product-grid" id="productGrid"></div>
+        <div class="load-more-wrap"><button class="button" id="loadMoreButton" type="button">Load More</button></div>
       </section>
-
-      <section class="checkout-section" id="checkout">
-        <div class="checkout-intro">
-          <p class="eyebrow">Checkout</p>
-          <h2>Fast checkout built for fewer abandoned carts.</h2>
-          <p>Cart, delivery, payment and review stay on one page, so customers never feel lost.</p>
+      <!-- ==================== REVIEWS / TESTIMONIALS TAB ==================== -->
+      <section class="section-shell" id="reviews">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">Testimonials</p>
+            <h2>Reviews</h2>
+          </div>
+          <button class="button" id="writeReviewButton" type="button">Write a Review</button>
         </div>
-
-        <form class="checkout-form" id="checkoutForm">
-          <div class="checkout-panel">
-            <h3>Contact and delivery</h3>
-            <div class="form-grid">
-              <label class="field"><span>Full name</span><input required name="name" placeholder="Aarav Sharma" /></label>
-              <label class="field"><span>Email</span><input required type="email" name="email" placeholder="you@example.com" /></label>
-              <label class="field"><span>Phone</span><input required name="phone" placeholder="+91 98765 43210" /></label>
-              <label class="field"><span>City</span><input required name="city" placeholder="Delhi" /></label>
-              <label class="field form-wide"><span>Address</span><input required name="address" placeholder="House no, street, area" /></label>
-            </div>
-          </div>
-
-          <div class="checkout-panel">
-            <h3>Delivery speed</h3>
-            <div class="option-row">
-              <label><input type="radio" name="shipping" value="standard" checked /> Standard, 3-5 days</label>
-              <strong>Free</strong>
-            </div>
-            <div class="option-row">
-              <label><input type="radio" name="shipping" value="express" /> Express, 1-2 days</label>
-              <strong>$12</strong>
-            </div>
-          </div>
-
-          <div class="checkout-panel">
-            <h3>Payment</h3>
-            <div class="payment-methods" role="radiogroup" aria-label="Payment method">
-              <label><input type="radio" name="payment" value="card" checked /> Card</label>
-              <label><input type="radio" name="payment" value="upi" /> UPI</label>
-              <label><input type="radio" name="payment" value="cod" /> Cash on delivery</label>
-            </div>
-            <label class="field"><span>Card or UPI reference</span><input name="paymentRef" placeholder="Demo checkout only" /></label>
-          </div>
-
-          <aside class="order-summary">
-            <h3>Order summary</h3>
-            <div id="checkoutItems" class="summary-items"></div>
-            <label class="promo-field">
-              <span>Promo code</span>
-              <input id="promoInput" placeholder="NOVA15" />
-              <button id="applyPromo" type="button">Apply</button>
-            </label>
-            <dl class="totals">
-              <div><dt>Subtotal</dt><dd id="subtotalValue">$0.00</dd></div>
-              <div><dt>Discount</dt><dd id="discountValue">-$0.00</dd></div>
-              <div><dt>Shipping</dt><dd id="shippingValue">$0.00</dd></div>
-              <div class="grand-total"><dt>Total</dt><dd id="totalValue">$0.00</dd></div>
-            </dl>
-            <button class="primary-action checkout-button" type="submit">Place order</button>
-            <p class="secure-note">Demo checkout: no payment is collected.</p>
+        <div class="reviews-layout">
+          <aside class="rating-card reveal">
+            <div class="rating-big">4.7</div>
+            <div class="stars">★★★★★</div>
+            <p>From 2,847 reviews</p>
+            <div id="ratingBars"></div>
           </aside>
-        </form>
+          <div>
+            <div class="reviews-tools reveal">
+              <select class="promo-input" id="reviewStarFilter" aria-label="Filter reviews by stars">
+                <option value="all">All Stars</option>
+                <option value="5">5 Star</option>
+                <option value="4">4 Star</option>
+                <option value="3">3 Star</option>
+                <option value="2">2 Star</option>
+                <option value="1">1 Star</option>
+              </select>
+              <select class="promo-input" id="reviewSortFilter" aria-label="Sort reviews">
+                <option value="recent">Most Recent</option>
+                <option value="helpful">Most Helpful</option>
+                <option value="verified">Verified Purchases</option>
+              </select>
+            </div>
+            <div class="reviews-list" id="reviewsList"></div>
+          </div>
+        </div>
+      </section>
+      <!-- ==================== CAREERS TAB ==================== -->
+      <section class="section-shell" id="careers">
+        <div class="careers-hero reveal">
+          <p class="eyebrow">Careers</p>
+          <h2>Join the NovaCart Team — Build the future of shopping</h2>
+          <p>We are making online shopping faster, calmer and more human for millions of customers.</p>
+        </div>
+        <div class="values-grid">
+          <div class="value-card reveal"><span class="trust-icon">💡</span><h3>Innovation</h3><p>We keep improving the customer journey.</p></div>
+          <div class="value-card reveal"><span class="trust-icon">❤️</span><h3>Customer First</h3><p>Every decision starts with shopper trust.</p></div>
+          <div class="value-card reveal"><span class="trust-icon">⚡</span><h3>Move Fast</h3><p>We ship, learn and refine quickly.</p></div>
+          <div class="value-card reveal"><span class="trust-icon">🧠</span><h3>Work Smart</h3><p>Clear thinking beats busy work.</p></div>
+        </div>
+        <div class="life-grid reveal">
+          <div>
+            <p class="eyebrow">Life at NovaCart</p>
+            <h2>Fast teams, kind culture.</h2>
+            <p>Our culture blends ownership, creativity and support. You will build useful things with people who care about craft.</p>
+          </div>
+          <div class="photo-grid">
+            <img src="https://picsum.photos/seed/office-life-1/500/400" alt="Team workspace" />
+            <img src="https://picsum.photos/seed/office-life-2/500/400" alt="Team collaboration" />
+            <img src="https://picsum.photos/seed/office-life-3/500/400" alt="Office culture" />
+            <img src="https://picsum.photos/seed/office-life-4/500/400" alt="Team discussion" />
+          </div>
+        </div>
+        <div class="jobs-list" id="jobsList"></div>
+        <div class="section-head reveal" style="margin-top: 1.5rem;">
+          <div>
+            <h3>Don't see your role?</h3>
+            <p>Send your CV to <a href="mailto:careers@novacart.example">careers@novacart.example</a></p>
+          </div>
+        </div>
+      </section>
+      <!-- ==================== ABOUT SECTION ==================== -->
+      <section class="section-shell" id="about">
+        <div class="about-grid">
+          <div class="story-card reveal">
+            <p class="eyebrow">Our story</p>
+            <h2>Shopping should feel effortless.</h2>
+            <p>NovaCart was created to make product discovery, cart building and checkout feel beautifully simple. We blend premium products with the speed customers expect from modern delivery apps.</p>
+            <div class="counter-grid">
+              <div class="counter-box"><strong data-count="10000">0</strong><span>Customers</span></div>
+              <div class="counter-box"><strong data-count="500">0</strong><span>Products</span></div>
+              <div class="counter-box"><strong data-count="50">0</strong><span>Brands</span></div>
+              <div class="counter-box"><strong data-count="4.8">0</strong><span>Avg Rating</span></div>
+            </div>
+          </div>
+          <div class="story-card reveal">
+            <p class="eyebrow">Mission & vision</p>
+            <h3>Our mission</h3>
+            <p>Help customers find quality products quickly, confidently and joyfully.</p>
+            <h3>Our vision</h3>
+            <p>Become the most trusted everyday shopping destination for premium essentials.</p>
+          </div>
+        </div>
+        <div class="team-grid" id="teamGrid"></div>
+        <div class="logo-row">
+          <div class="brand-logo">AURORA</div>
+          <div class="brand-logo">LUMA</div>
+          <div class="brand-logo">ATLAS</div>
+          <div class="brand-logo">FLOW</div>
+          <div class="brand-logo">TERRA</div>
+        </div>
+      </section>
+      <!-- ==================== CONTACT SECTION ==================== -->
+      <section class="section-shell" id="contact">
+        <div class="section-head reveal">
+          <div>
+            <p class="eyebrow">Contact</p>
+            <h2>How can we help?</h2>
+          </div>
+          <p>Send a message for orders, returns, feedback, partnerships or careers.</p>
+        </div>
+        <div class="contact-grid-main">
+          <form class="contact-card reveal" id="contactForm" novalidate>
+            <div class="contact-grid">
+              <label class="contact-field"><span>Name</span><input name="name" required /><small class="field-error"></small></label>
+              <label class="contact-field"><span>Email</span><input name="email" type="email" required /><small class="field-error"></small></label>
+              <label class="contact-field field-wide"><span>Subject</span><select name="subject" required><option value="">Choose one</option><option>Order Issue</option><option>Returns</option><option>Feedback</option><option>Partnership</option><option>Careers</option></select><small class="field-error"></small></label>
+              <label class="contact-field field-wide"><span>Message</span><textarea name="message" required></textarea><small class="field-error"></small></label>
+            </div>
+            <button class="button" type="submit">Send Message</button>
+          </form>
+          <aside class="contact-details reveal">
+            <div class="info-card"><strong>Email</strong><p>hello@novacart.example</p></div>
+            <div class="info-card"><strong>Phone</strong><p>+91 98765 43210</p></div>
+            <div class="info-card"><strong>WhatsApp</strong><p><a href="https://wa.me/919876543210">Chat with support</a></p></div>
+            <div class="info-card"><strong>Office</strong><p>NovaCart HQ, MG Road, Bengaluru, India</p></div>
+          </aside>
+        </div>
+        <div class="contact-grid-main">
+          <div class="map-card reveal"><strong>Find us here</strong><p>Google Maps embed placeholder</p></div>
+          <div class="story-card reveal">
+            <h3>Follow NovaCart</h3>
+            <div class="social-links">
+              <a href="#">Instagram</a>
+              <a href="#">Twitter</a>
+              <a href="#">LinkedIn</a>
+              <a href="#">YouTube</a>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
-
-    <aside class="cart-drawer" id="cartDrawer" aria-hidden="true" aria-label="Shopping cart">
-      <div class="drawer-header">
-        <div>
-          <p class="eyebrow">Your bag</p>
-          <h2>Cart</h2>
-        </div>
-        <button class="icon-button" id="closeCart" type="button" aria-label="Close cart">×</button>
+    <!-- ==================== WISHLIST PANEL ==================== -->
+    <aside class="panel" id="wishlistPanel" aria-hidden="true" aria-label="Wishlist">
+      <div class="panel-head">
+        <div><p class="eyebrow">Saved</p><h3>Wishlist</h3></div>
+        <button class="icon-button close-panel" type="button" aria-label="Close wishlist">×</button>
       </div>
-      <div class="cart-items" id="cartItems"></div>
-      <div class="drawer-footer">
-        <div class="mini-total"><span>Total</span><strong id="drawerTotal">$0.00</strong></div>
-        <a class="primary-action" href="#checkout" id="checkoutLink">Checkout now</a>
+      <div class="panel-body" id="wishlistItems"></div>
+    </aside>
+    <!-- ==================== CART EXPERIENCE ==================== -->
+    <aside class="panel" id="cartPanel" aria-hidden="true" aria-label="Cart">
+      <div class="panel-head">
+        <div><p class="eyebrow">Your bag</p><h3>Cart</h3></div>
+        <button class="icon-button close-panel" type="button" aria-label="Close cart">×</button>
+      </div>
+      <div class="panel-body" id="cartItems"></div>
+      <div class="panel-footer">
+        <label class="filter-field">
+          <span>Promo code</span>
+          <input class="promo-input" id="cartPromoInput" placeholder="Try NOVA15" />
+        </label>
+        <button class="mini-button" id="cartApplyPromo" type="button">Apply Coupon</button>
+        <div id="cartTotals"></div>
+        <button class="button" id="checkoutOpenButton" type="button">Proceed to Checkout</button>
       </div>
     </aside>
-
+    <!-- ==================== PRODUCT QUICK VIEW POPUP ==================== -->
     <div class="overlay" id="overlay"></div>
-
-    <dialog class="quick-view" id="quickView">
-      <button class="icon-button dialog-close" id="closeQuickView" type="button" aria-label="Close product preview">×</button>
+    <section class="modal" id="quickViewModal" aria-hidden="true" aria-label="Product quick view">
+      <button class="icon-button modal-close" data-close-modal type="button" aria-label="Close quick view">×</button>
       <div id="quickViewContent"></div>
-    </dialog>
-
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-    <script src="app.js"></script>
+    </section>
+    <!-- ==================== CHECKOUT PAGE / MODAL ==================== -->
+    <section class="modal checkout-modal" id="checkoutModal" aria-hidden="true" aria-label="Checkout">
+      <button class="icon-button modal-close" data-close-modal type="button" aria-label="Close checkout">×</button>
+      <div id="checkoutContent"></div>
+    </section>
+    <!-- ==================== REVIEW FORM POPUP ==================== -->
+    <section class="modal" id="reviewModal" aria-hidden="true" aria-label="Write a review">
+      <button class="icon-button modal-close" data-close-modal type="button" aria-label="Close review form">×</button>
+      <form class="story-card" id="reviewForm" novalidate style="margin: 0 1rem 1rem;">
+        <p class="eyebrow">Your review</p>
+        <h2>Write a Review</h2>
+        <div class="checkout-grid">
+          <label class="checkout-field"><span>Name</span><input name="name" required /><small class="field-error"></small></label>
+          <label class="checkout-field"><span>Email</span><input name="email" type="email" required /><small class="field-error"></small></label>
+          <label class="checkout-field field-wide"><span>Rating</span><div class="variant-row" id="reviewStars"></div><input name="rating" type="hidden" required /><small class="field-error"></small></label>
+          <label class="checkout-field field-wide"><span>Review title</span><input name="title" required /><small class="field-error"></small></label>
+          <label class="checkout-field field-wide"><span>Review text</span><textarea name="text" required></textarea><small class="field-error"></small></label>
+        </div>
+        <button class="button" type="submit">Submit Review</button>
+      </form>
+    </section>
+    <!-- ==================== CAREERS APPLICATION POPUP ==================== -->
+    <section class="modal" id="applicationModal" aria-hidden="true" aria-label="Apply for a job">
+      <button class="icon-button modal-close" data-close-modal type="button" aria-label="Close application form">×</button>
+      <form class="story-card" id="applicationForm" novalidate style="margin: 0 1rem 1rem;">
+        <p class="eyebrow">Application</p>
+        <h2 id="applicationTitle">Apply Now</h2>
+        <div class="application-grid">
+          <label class="checkout-field"><span>Name</span><input name="name" required /><small class="field-error"></small></label>
+          <label class="checkout-field"><span>Email</span><input name="email" type="email" required /><small class="field-error"></small></label>
+          <label class="checkout-field"><span>Phone</span><input name="phone" required /><small class="field-error"></small></label>
+          <label class="checkout-field"><span>LinkedIn URL</span><input name="linkedin" placeholder="https://linkedin.com/in/you" /><small class="field-error"></small></label>
+          <label class="checkout-field field-wide"><span>Resume upload</span><input name="resume" type="file" /><small class="field-error"></small></label>
+          <label class="checkout-field field-wide"><span>Cover letter</span><textarea name="cover" required></textarea><small class="field-error"></small></label>
+        </div>
+        <button class="button" type="submit">Submit Application</button>
+      </form>
+    </section>
+    <!-- ==================== REWARD POPUP ==================== -->
+    <section class="modal" id="rewardModal" aria-hidden="true" aria-label="Reward">
+      <button class="icon-button modal-close" data-close-modal type="button" aria-label="Close reward">×</button>
+      <div class="success-page show" style="margin: 0 1rem 1rem;">
+        <div>
+          <div class="success-icon">🎉</div>
+          <h2 id="rewardTitle">You won!</h2>
+          <p id="rewardText">Use your reward at checkout.</p>
+          <button class="button" data-close-modal type="button">Awesome</button>
+        </div>
+      </div>
+    </section>
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <a class="brand" href="#home"><span class="brand-mark">N</span><span>NovaCart</span></a>
+          <p>Fast, minimal and premium shopping for everyday life.</p>
+          <div class="social-links"><a href="#">Instagram</a><a href="#">LinkedIn</a></div>
+        </div>
+        <div>
+          <h3>Quick Links</h3>
+          <a href="#home">Home</a><a href="#shop">Shop</a><a href="#deals">Deals</a><a href="#about">About</a>
+        </div>
+        <div>
+          <h3>Customer Support</h3>
+          <a href="#contact">Contact</a><a href="#reviews">Reviews</a><a href="#careers">Careers</a><a href="#discount-game">Rewards</a>
+        </div>
+        <div>
+          <h3>Newsletter</h3>
+          <p>Get new drops and offers.</p>
+          <form class="newsletter" id="newsletterForm">
+            <input type="email" placeholder="Email address" required />
+            <button class="button" type="submit">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      <div class="copyright">© 2026 NovaCart. All rights reserved.</div>
+    </footer>
+    <div class="toast-zone" id="toastZone"></div>
+    <script>
+      /* ==================== EDIT PRODUCTS HERE ==================== */
+      // 🛒 ADD OR EDIT YOUR PRODUCTS HERE — just copy a product block and change the details.
+      // Keep each product id unique. Prices are in rupees. Images use picsum.photos placeholders.
+      const products = [
+        { id: 1, name: "Aurora Wireless Headphones", price: 2499, originalPrice: 3999, category: "Electronics", rating: 4.8, reviews: 1240, image: "https://picsum.photos/seed/headphones-1/700/700", badge: "Bestseller", inStock: true, lowStock: false, fastDelivery: true, isNew: true, description: "Noise-cancelling headphones with deep bass, 40-hour battery and soft cushions.", details: "Perfect for travel, work calls and music lovers who want rich sound without distractions.", variants: ["Black", "Silver", "Purple"] },
+        { id: 2, name: "Luma Smart Desk Lamp", price: 1299, originalPrice: 1999, category: "Home & Kitchen", rating: 4.6, reviews: 780, image: "https://picsum.photos/seed/lamp-2/700/700", badge: "New", inStock: true, lowStock: false, fastDelivery: true, isNew: true, description: "Dimmable LED lamp with wireless charging and three focus modes.", details: "A compact desk upgrade for reading, studying and late-night work.", variants: ["Warm", "Neutral", "Cool"] },
+        { id: 3, name: "Transit Weekender Backpack", price: 1799, originalPrice: 2499, category: "Lifestyle", rating: 4.7, reviews: 612, image: "https://picsum.photos/seed/backpack-3/700/700", badge: "Travel Pick", inStock: true, lowStock: true, fastDelivery: false, isNew: false, description: "Water-resistant backpack with laptop sleeve and clamshell opening.", details: "Built for short trips, office days and organized everyday carrying.", variants: ["18L", "24L", "32L"] },
+        { id: 4, name: "Pulse Fitness Watch", price: 3499, originalPrice: 4999, category: "Electronics", rating: 4.9, reviews: 2201, image: "https://picsum.photos/seed/watch-4/700/700", badge: "Top Rated", inStock: true, lowStock: false, fastDelivery: true, isNew: false, description: "Fitness watch with GPS, sleep tracking and always-on display.", details: "Track workouts, health trends, steps and notifications from your wrist.", variants: ["S", "M", "L"] },
+        { id: 5, name: "Stoneware Dining Set", price: 2299, originalPrice: 3299, category: "Home & Kitchen", rating: 4.5, reviews: 341, image: "https://picsum.photos/seed/dining-5/700/700", badge: "Sale", inStock: true, lowStock: false, fastDelivery: false, isNew: false, description: "16-piece matte stoneware set for four people.", details: "Includes dinner plates, side plates, bowls and mugs with a premium matte finish.", variants: ["Ivory", "Sage", "Charcoal"] },
+        { id: 6, name: "Flow Mechanical Keyboard", price: 2799, originalPrice: 3999, category: "Electronics", rating: 4.8, reviews: 980, image: "https://picsum.photos/seed/keyboard-6/700/700", badge: "Creator Pick", inStock: true, lowStock: false, fastDelivery: true, isNew: true, description: "Low-profile mechanical keyboard with Bluetooth multi-device pairing.", details: "A crisp typing experience for creators, gamers and productivity lovers.", variants: ["Blue", "Brown", "Red"] },
+        { id: 7, name: "Terra Ceramic Planter Duo", price: 699, originalPrice: 999, category: "Home & Kitchen", rating: 4.4, reviews: 215, image: "https://picsum.photos/seed/planter-7/700/700", badge: "Fresh", inStock: true, lowStock: false, fastDelivery: true, isNew: false, description: "Two glazed ceramic planters with drainage trays.", details: "A simple way to add greenery to desks, shelves and balconies.", variants: ["Small", "Medium"] },
+        { id: 8, name: "Atlas Carry-On Spinner", price: 4999, originalPrice: 6999, category: "Lifestyle", rating: 4.7, reviews: 455, image: "https://picsum.photos/seed/luggage-8/700/700", badge: "Travel", inStock: true, lowStock: true, fastDelivery: true, isNew: false, description: "Lightweight hard-shell suitcase with smooth spinner wheels.", details: "Compact, durable and cabin-ready with smart compression inside.", variants: ["Cabin", "Medium", "Large"] },
+        { id: 9, name: "CloudSoft Cotton Hoodie", price: 1499, originalPrice: 2499, category: "Fashion", rating: 4.6, reviews: 735, image: "https://picsum.photos/seed/hoodie-9/700/700", badge: "Cozy", inStock: true, lowStock: false, fastDelivery: true, isNew: true, description: "Soft oversized hoodie made with breathable cotton fleece.", details: "Easy streetwear comfort for everyday outfits.", variants: ["S", "M", "L", "XL"] },
+        { id: 10, name: "Everyday Linen Shirt", price: 1199, originalPrice: 1799, category: "Fashion", rating: 4.3, reviews: 302, image: "https://picsum.photos/seed/shirt-10/700/700", badge: "Lightweight", inStock: true, lowStock: false, fastDelivery: false, isNew: false, description: "Relaxed linen shirt for workdays, weekends and travel.", details: "Breathable fabric with a soft washed texture.", variants: ["S", "M", "L", "XL"] },
+        { id: 11, name: "Atomic Habits Book", price: 399, originalPrice: 599, category: "Books", rating: 4.9, reviews: 3100, image: "https://picsum.photos/seed/book-11/700/700", badge: "Popular", inStock: true, lowStock: false, fastDelivery: true, isNew: false, description: "A practical guide to building better habits every day.", details: "One of the most loved personal growth books for small daily improvements.", variants: ["Paperback", "Hardcover"] },
+        { id: 12, name: "Deep Work Book", price: 449, originalPrice: 699, category: "Books", rating: 4.8, reviews: 1890, image: "https://picsum.photos/seed/book-12/700/700", badge: "Focus", inStock: true, lowStock: false, fastDelivery: true, isNew: false, description: "A guide to focused success in a distracted world.", details: "Useful for students, founders, creators and knowledge workers.", variants: ["Paperback", "Hardcover"] },
+        { id: 13, name: "AeroBlend Mixer Grinder", price: 3199, originalPrice: 4499, category: "Home & Kitchen", rating: 4.2, reviews: 402, image: "https://picsum.photos/seed/mixer-13/700/700", badge: "Kitchen", inStock: true, lowStock: true, fastDelivery: true, isNew: true, description: "Powerful mixer grinder with three stainless steel jars.", details: "Built for smoothies, chutneys, spices and everyday cooking prep.", variants: ["750W", "1000W"] },
+        { id: 14, name: "Nova Hydration Bottle", price: 599, originalPrice: 899, category: "Lifestyle", rating: 4.5, reviews: 688, image: "https://picsum.photos/seed/bottle-14/700/700", badge: "Daily", inStock: true, lowStock: false, fastDelivery: true, isNew: false, description: "Insulated steel bottle that keeps drinks cold for 18 hours.", details: "Leak-proof, easy to carry and made for workouts, commutes and school.", variants: ["600ml", "900ml"] },
+        { id: 15, name: "Studio Wireless Speaker", price: 2199, originalPrice: 3299, category: "Electronics", rating: 4.4, reviews: 850, image: "https://picsum.photos/seed/speaker-15/700/700", badge: "Party", inStock: true, lowStock: false, fastDelivery: true, isNew: false, description: "Portable speaker with punchy sound and splash resistance.", details: "Pair it quickly and enjoy room-filling sound indoors or outdoors.", variants: ["Black", "Blue", "Orange"] },
+        { id: 16, name: "Minimalist Wallet", price: 799, originalPrice: 1299, category: "Fashion", rating: 4.1, reviews: 144, image: "https://picsum.photos/seed/wallet-16/700/700", badge: "Slim", inStock: true, lowStock: false, fastDelivery: false, isNew: true, description: "Slim vegan leather wallet with RFID-blocking lining.", details: "Carries cards and cash without adding bulk.", variants: ["Tan", "Black", "Navy"] }
+      ];
+      /* ==================== EDIT REVIEWS HERE ==================== */
+      // Change these reviews to show real customer feedback.
+      const reviews = [
+        { id: 1, name: "Aarav Sharma", date: "May 14, 2026", rating: 5, title: "Super fast and beautiful", text: "The checkout felt smooth and my headphones arrived earlier than expected.", helpful: 42, verified: true },
+        { id: 2, name: "Meera Rao", date: "May 12, 2026", rating: 5, title: "My new favorite store", text: "Clean design, good prices and the cart experience is much easier than most sites.", helpful: 36, verified: true },
+        { id: 3, name: "Kabir Singh", date: "May 10, 2026", rating: 4, title: "Great deals", text: "Coupons worked instantly. I would love even more electronics options.", helpful: 21, verified: true },
+        { id: 4, name: "Nisha Kapoor", date: "May 8, 2026", rating: 5, title: "Easy returns", text: "Support helped me exchange a shirt size quickly. Very friendly team.", helpful: 18, verified: true },
+        { id: 5, name: "Rohan Das", date: "May 7, 2026", rating: 4, title: "Premium feel", text: "The product cards are clear and I liked the wishlist feature.", helpful: 12, verified: false },
+        { id: 6, name: "Priya Menon", date: "May 4, 2026", rating: 5, title: "Loved the flash sale", text: "Got my kitchen set at a great price and checkout took under a minute.", helpful: 29, verified: true },
+        { id: 7, name: "Dev Patel", date: "May 1, 2026", rating: 3, title: "Good but can improve", text: "Nice experience overall. More payment options would make it even better.", helpful: 8, verified: false },
+        { id: 8, name: "Sara Khan", date: "Apr 28, 2026", rating: 5, title: "Perfect mobile experience", text: "Everything felt built for my phone. I found products quickly.", helpful: 33, verified: true }
+      ];
+      /* ==================== EDIT JOB POSTINGS HERE ==================== */
+      // Add or remove jobs here. Each job becomes an expandable careers card.
+      const jobs = [
+        { title: "Frontend Developer", department: "Engineering", location: "Remote", type: "Full-time", description: "Build fast, polished shopping interfaces.", requirements: ["Strong HTML, CSS and JavaScript", "Eye for responsive UI", "Comfort with performance basics"], responsibilities: ["Create storefront features", "Improve accessibility", "Collaborate with product and design"] },
+        { title: "Product Manager", department: "Product", location: "Hybrid", type: "Full-time", description: "Shape NovaCart's customer journey.", requirements: ["2+ years product experience", "Data-informed decision making", "Strong communication"], responsibilities: ["Prioritize roadmap", "Write product specs", "Measure feature success"] },
+        { title: "Marketing Executive", department: "Growth", location: "On-site", type: "Full-time", description: "Launch campaigns, offers and creator partnerships.", requirements: ["Campaign experience", "Copywriting skills", "Social media knowledge"], responsibilities: ["Plan promotions", "Track campaign results", "Coordinate launches"] },
+        { title: "Customer Support Lead", department: "Support", location: "Remote", type: "Full-time", description: "Lead friendly, fast customer support.", requirements: ["Support leadership experience", "Empathy and patience", "Process mindset"], responsibilities: ["Coach support team", "Improve help workflows", "Resolve escalations"] },
+        { title: "Data Analyst", department: "Analytics", location: "Hybrid", type: "Internship", description: "Turn shopping data into useful insights.", requirements: ["SQL basics", "Spreadsheet confidence", "Curiosity"], responsibilities: ["Build dashboards", "Analyze funnels", "Report customer trends"] }
+      ];
+      /* ==================== EDIT TEAM MEMBERS HERE ==================== */
+      const teamMembers = [
+        { name: "Ira Mehta", role: "Founder & CEO", bio: "Loves simple products and fast customer experiences.", image: "https://picsum.photos/seed/team-ira/300/300" },
+        { name: "Rishi Jain", role: "Head of Product", bio: "Turns customer friction into clean workflows.", image: "https://picsum.photos/seed/team-rishi/300/300" },
+        { name: "Anika Bose", role: "Design Lead", bio: "Builds calm, premium interfaces with personality.", image: "https://picsum.photos/seed/team-anika/300/300" },
+        { name: "Vivaan Iyer", role: "Operations Lead", bio: "Keeps delivery, support and returns running smoothly.", image: "https://picsum.photos/seed/team-vivaan/300/300" }
+      ];
+      /* ==================== WEBSITE LOGIC STARTS HERE ==================== */
+      // The code below powers filtering, cart, checkout, reviews, careers and animations.
+      const rupee = (value) => `₹${Math.round(value).toLocaleString("en-IN")}`;
+      const $ = (selector) => document.querySelector(selector);
+      const $$ = (selector) => [...document.querySelectorAll(selector)];
+      const state = {
+        cart: JSON.parse(sessionStorage.getItem("novaCart") || "[]"),
+        wishlist: JSON.parse(sessionStorage.getItem("novaWishlist") || "[]"),
+        promo: "",
+        productLimit: 8,
+        currentBanner: 0,
+        checkoutStep: 1,
+        checkoutData: { shipping: "standard", payment: "card" },
+        filters: { query: "", category: "All", sort: "featured", price: 5000, stock: false, sale: false, fast: false },
+        reviewFilter: "all",
+        reviewSort: "recent"
+      };
+      const coupons = [
+        { code: "NOVA15", title: "15% off", description: "Save 15% on orders above ₹999.", type: "percent", value: 15 },
+        { code: "FIRST50", title: "₹50 off", description: "Use on your first NovaCart order.", type: "flat", value: 50 },
+        { code: "FLASH40", title: "40% off", description: "Special flash sale items only.", type: "percent", value: 40 }
+      ];
+      const wheelRewards = ["5% off", "10% off", "Free Shipping", "15% off", "₹100 off", "20% off", "25% off", "Try Again"];
+      const scratchRewards = ["Try Again", "10% Discount", "Free Delivery"];
+      const categoryList = ["All", "Electronics", "Home & Kitchen", "Lifestyle", "Fashion", "Books"];
+      function saveSession() {
+        sessionStorage.setItem("novaCart", JSON.stringify(state.cart));
+        sessionStorage.setItem("novaWishlist", JSON.stringify(state.wishlist));
+      }
+      function showToast(message) {
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.textContent = message;
+        $("#toastZone").appendChild(toast);
+        setTimeout(() => toast.remove(), 3100);
+      }
+      function confetti(amount = 44) {
+        const colors = ["#7c3aed", "#f59e0b", "#10b981", "#ef4444", "#0ea5e9"];
+        for (let index = 0; index < amount; index++) {
+          const piece = document.createElement("span");
+          piece.className = "confetti-piece";
+          piece.style.left = `${Math.random() * 100}vw`;
+          piece.style.top = `${-20 - Math.random() * 40}px`;
+          piece.style.background = colors[index % colors.length];
+          piece.style.animationDelay = `${Math.random() * 350}ms`;
+          document.body.appendChild(piece);
+          setTimeout(() => piece.remove(), 1600);
+        }
+      }
+      function cartLines() {
+        return state.cart.map((line) => ({ ...line, product: products.find((product) => product.id === line.id) })).filter((line) => line.product);
+      }
+      function subtotal() {
+        return cartLines().reduce((total, line) => total + line.product.price * line.quantity, 0);
+      }
+      function shippingCost() {
+        if (!state.cart.length) return 0;
+        return state.checkoutData.shipping === "express" ? 99 : 0;
+      }
+      function discountAmount() {
+        const total = subtotal();
+        const coupon = coupons.find((item) => item.code === state.promo);
+        if (!coupon) return 0;
+        if (coupon.type === "flat") return Math.min(coupon.value, total);
+        return total * (coupon.value / 100);
+      }
+      function grandTotal() {
+        return Math.max(subtotal() - discountAmount() + shippingCost(), 0);
+      }
+      function discountPercent(product) {
+        return Math.round((1 - product.price / product.originalPrice) * 100);
+      }
+      function starText(rating) {
+        return "★★★★★".slice(0, Math.round(rating)) + "☆☆☆☆☆".slice(0, 5 - Math.round(rating));
+      }
+      function productGallery(product) {
+        return [product.image, `${product.image}?blur=1`, `${product.image}?grayscale=1`];
+      }
+      function initLoader() {
+        setTimeout(() => $("#pageLoader").classList.add("hidden"), 1500);
+      }
+      function initHeader() {
+        window.addEventListener("scroll", () => $("#siteHeader").classList.toggle("scrolled", window.scrollY > 30));
+        $("#hamburger").addEventListener("click", () => document.body.classList.toggle("menu-open"));
+        $$("#navLinks a").forEach((link) => link.addEventListener("click", () => document.body.classList.remove("menu-open")));
+      }
+      function initTypewriter() {
+        const words = ["Shop Smarter", "Save More", "Delivered Fast"];
+        let wordIndex = 0;
+        let letterIndex = 0;
+        let deleting = false;
+        const target = $("#typewriterText");
+        setInterval(() => {
+          const word = words[wordIndex];
+          target.textContent = word.slice(0, letterIndex);
+          if (!deleting && letterIndex < word.length) letterIndex++;
+          else if (deleting && letterIndex > 0) letterIndex--;
+          else if (!deleting) deleting = true;
+          else {
+            deleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+          }
+        }, deleting ? 55 : 105);
+      }
+      function initRevealAnimations() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              if (entry.target.matches(".counter-box strong, #heroCount")) animateCounter(entry.target);
+            }
+          });
+        }, { threshold: 0.18 });
+        $$(".reveal, .counter-box strong, #heroCount").forEach((item) => observer.observe(item));
+      }
+      function animateCounter(element) {
+        if (element.dataset.done) return;
+        element.dataset.done = "true";
+        const end = Number(element.dataset.count);
+        const duration = 1300;
+        const start = performance.now();
+        const decimals = String(end).includes(".") ? 1 : 0;
+        function tick(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          const value = end * progress;
+          element.textContent = value.toLocaleString("en-IN", { maximumFractionDigits: decimals, minimumFractionDigits: decimals });
+          if (progress < 1) requestAnimationFrame(tick);
+          else element.textContent = end.toLocaleString("en-IN", { maximumFractionDigits: decimals, minimumFractionDigits: decimals }) + (end >= 50 ? "+" : "");
+        }
+        requestAnimationFrame(tick);
+      }
+      function initButtons() {
+        document.addEventListener("click", (event) => {
+          const button = event.target.closest("button, .button, .ghost-button, .mini-button, .danger-button");
+          if (!button) return;
+          const ripple = document.createElement("span");
+          const rect = button.getBoundingClientRect();
+          ripple.className = "ripple";
+          ripple.style.left = `${event.clientX - rect.left}px`;
+          ripple.style.top = `${event.clientY - rect.top}px`;
+          button.appendChild(ripple);
+          setTimeout(() => ripple.remove(), 600);
+        });
+      }
+      function initBanners() {
+        const banners = $$(".promo-banner");
+        const showBanner = (index) => {
+          state.currentBanner = (index + banners.length) % banners.length;
+          banners.forEach((banner, bannerIndex) => banner.classList.toggle("active", bannerIndex === state.currentBanner));
+        };
+        $("#bannerPrev").addEventListener("click", () => showBanner(state.currentBanner - 1));
+        $("#bannerNext").addEventListener("click", () => showBanner(state.currentBanner + 1));
+        setInterval(() => showBanner(state.currentBanner + 1), 4000);
+      }
+      function initCountdowns() {
+        const endTime = Date.now() + 24 * 60 * 60 * 1000;
+        setInterval(() => {
+          const remaining = Math.max(endTime - Date.now(), 0);
+          const hours = String(Math.floor(remaining / 3600000)).padStart(2, "0");
+          const minutes = String(Math.floor((remaining % 3600000) / 60000)).padStart(2, "0");
+          const seconds = String(Math.floor((remaining % 60000) / 1000)).padStart(2, "0");
+          $("#flashCountdown").textContent = `${hours}:${minutes}:${seconds}`;
+          $$(".coupon-expiry").forEach((item) => item.textContent = `Expires in ${hours} hours`);
+        }, 1000);
+      }
+      function renderCoupons() {
+        $("#couponGrid").innerHTML = coupons.map((coupon) => `
+          <article class="coupon-card reveal">
+            <p class="eyebrow">${coupon.title}</p>
+            <h3>${coupon.description}</h3>
+            <span class="coupon-code">${coupon.code}</span>
+            <p class="coupon-expiry">Expires in 24 hours</p>
+            <button class="mini-button coupon-copy" type="button" data-code="${coupon.code}">Copy Code <span class="copied-check">✓</span></button>
+          </article>
+        `).join("");
+        $$(".coupon-copy").forEach((button) => {
+          button.addEventListener("click", async () => {
+            await copyCode(button.dataset.code);
+            button.querySelector(".copied-check").classList.add("show");
+            setTimeout(() => button.querySelector(".copied-check").classList.remove("show"), 1200);
+          });
+        });
+      }
+      async function copyCode(code) {
+        try {
+          await navigator.clipboard.writeText(code);
+        } catch (error) {
+          $("#cartPromoInput").value = code;
+        }
+        showToast(`${code} copied! ✓`);
+      }
+      function initGame() {
+        $("#wheelLabels").innerHTML = wheelRewards.map((reward) => `<span>${reward}</span>`).join("");
+        const spun = sessionStorage.getItem("novaSpinUsed") === "true";
+        if (spun) {
+          $("#spinButton").disabled = true;
+          $("#spinMessage").textContent = "Come back tomorrow!";
+        }
+        $("#spinButton").addEventListener("click", () => {
+          if (sessionStorage.getItem("novaSpinUsed") === "true") return;
+          const index = Math.floor(Math.random() * wheelRewards.length);
+          const degrees = 1440 + index * 45 + 18;
+          $("#discountWheel").style.transform = `rotate(${degrees}deg)`;
+          $("#spinButton").disabled = true;
+          $("#spinMessage").textContent = "Spinning...";
+          sessionStorage.setItem("novaSpinUsed", "true");
+          setTimeout(() => {
+            const reward = wheelRewards[index];
+            $("#spinMessage").textContent = "Come back tomorrow!";
+            showReward(reward, reward === "Try Again" ? "Try tomorrow for another chance." : `Coupon code: SPIN${index + 1}NOVA`);
+          }, 3100);
+        });
+        const winningIndex = Math.floor(Math.random() * 3);
+        $("#scratchCards").innerHTML = [0, 1, 2].map((index) => `<button class="scratch-card" type="button" data-index="${index}">Scratch Me</button>`).join("");
+        $$(".scratch-card").forEach((card) => {
+          card.addEventListener("click", () => {
+            if (card.classList.contains("revealed")) return;
+            const reward = Number(card.dataset.index) === winningIndex ? scratchRewards[1 + Math.floor(Math.random() * 2)] : scratchRewards[0];
+            card.classList.add("revealed");
+            card.textContent = reward;
+            if (reward !== "Try Again") showReward(reward, "Use scratch reward code: SCRATCHNOVA");
+          });
+        });
+      }
+      function showReward(title, text) {
+        $("#rewardTitle").textContent = title;
+        $("#rewardText").textContent = text;
+        openModal("#rewardModal");
+        confetti(36);
+      }
+      function setupFilters() {
+        $("#categoryFilter").innerHTML = categoryList.map((category) => `<option value="${category}">${category}</option>`).join("");
+        $("#shopSearchInput").addEventListener("input", (event) => { state.filters.query = event.target.value; state.productLimit = 8; renderProducts(); });
+        $("#categoryFilter").addEventListener("change", (event) => { state.filters.category = event.target.value; state.productLimit = 8; renderProducts(); });
+        $("#sortFilter").addEventListener("change", (event) => { state.filters.sort = event.target.value; renderProducts(); });
+        $("#priceRange").addEventListener("input", (event) => { state.filters.price = Number(event.target.value); $("#priceRangeLabel").textContent = rupee(state.filters.price); renderProducts(); });
+        $("#stockOnlyFilter").addEventListener("change", (event) => { state.filters.stock = event.target.checked; renderProducts(); });
+        $("#saleOnlyFilter").addEventListener("change", (event) => { state.filters.sale = event.target.checked; renderProducts(); });
+        $("#fastOnlyFilter").addEventListener("change", (event) => { state.filters.fast = event.target.checked; renderProducts(); });
+        $("#loadMoreButton").addEventListener("click", () => { state.productLimit += 8; renderProducts(); });
+      }
+      function filteredProducts() {
+        const query = state.filters.query.trim().toLowerCase();
+        const filtered = products.filter((product) => {
+          const matchesQuery = !query || product.name.toLowerCase().includes(query) || product.description.toLowerCase().includes(query) || product.category.toLowerCase().includes(query);
+          const matchesCategory = state.filters.category === "All" || product.category === state.filters.category;
+          const matchesPrice = product.price <= state.filters.price;
+          const matchesStock = !state.filters.stock || product.inStock;
+          const matchesSale = !state.filters.sale || product.originalPrice > product.price;
+          const matchesFast = !state.filters.fast || product.fastDelivery;
+          return matchesQuery && matchesCategory && matchesPrice && matchesStock && matchesSale && matchesFast;
+        });
+        return filtered.sort((a, b) => {
+          if (state.filters.sort === "low") return a.price - b.price;
+          if (state.filters.sort === "high") return b.price - a.price;
+          if (state.filters.sort === "rated") return b.rating - a.rating;
+          if (state.filters.sort === "new") return Number(b.isNew) - Number(a.isNew);
+          return b.reviews - a.reviews;
+        });
+      }
+      function renderProducts() {
+        const list = filteredProducts();
+        const visible = list.slice(0, state.productLimit);
+        $("#productResultCount").textContent = `${list.length} product${list.length === 1 ? "" : "s"} found`;
+        $("#productGrid").innerHTML = visible.length ? visible.map(productCard).join("") : `<div class="no-results">No products found. Try a different search or filter.</div>`;
+        $("#loadMoreButton").style.display = list.length > state.productLimit ? "inline-flex" : "none";
+      }
+      function productCard(product) {
+        const wished = state.wishlist.includes(product.id);
+        return `
+          <article class="product-card slide-in" id="product-${product.id}">
+            <div class="product-media">
+              <img src="${product.image}" alt="${product.name}" />
+              <span class="sale-badge">${discountPercent(product)}% off</span>
+              ${product.fastDelivery ? `<span class="fast-badge">Fast</span>` : ""}
+            </div>
+            <div class="product-body">
+              <div class="product-top"><span class="product-category">${product.category}</span><span class="stock-badge ${product.lowStock ? "low" : ""}">${product.lowStock ? "Low Stock" : "In Stock"}</span></div>
+              <h3>${product.name}</h3>
+              <p>${product.description}</p>
+              <div><span class="stars">${starText(product.rating)}</span> <small>${product.rating} (${product.reviews})</small></div>
+              <div class="price-row"><span><span class="old-price">${rupee(product.originalPrice)}</span> <span class="new-price">${rupee(product.price)}</span></span></div>
+              <div class="product-actions">
+                <button class="button" type="button" data-add-cart="${product.id}">Add to Cart +</button>
+                <button class="icon-button heart-button ${wished ? "active" : ""}" type="button" data-wishlist="${product.id}" aria-label="Toggle wishlist">♡</button>
+              </div>
+            </div>
+            <div class="quick-layer">
+              <strong>${product.badge}</strong>
+              <p>${product.details}</p>
+              <button class="mini-button" type="button" data-quick-view="${product.id}">Quick View</button>
+            </div>
+          </article>
+        `;
+      }
+      function initProductActions() {
+        document.addEventListener("click", (event) => {
+          const add = event.target.closest("[data-add-cart]");
+          const wish = event.target.closest("[data-wishlist]");
+          const quick = event.target.closest("[data-quick-view]");
+          const related = event.target.closest("[data-related]");
+          if (add) addToCart(Number(add.dataset.addCart));
+          if (wish) toggleWishlist(Number(wish.dataset.wishlist));
+          if (quick) openQuickView(Number(quick.dataset.quickView));
+          if (related) openQuickView(Number(related.dataset.related));
+        });
+      }
+      function addToCart(id, quantity = 1) {
+        const product = products.find((item) => item.id === id);
+        if (!product) return;
+        const line = state.cart.find((item) => item.id === id);
+        if (line) line.quantity += quantity;
+        else state.cart.push({ id, quantity });
+        saveSession();
+        renderCart();
+        showToast("Added to cart ✓");
+        $("#cartCount").classList.add("bump");
+        setTimeout(() => $("#cartCount").classList.remove("bump"), 500);
+      }
+      function toggleWishlist(id) {
+        if (state.wishlist.includes(id)) {
+          state.wishlist = state.wishlist.filter((item) => item !== id);
+          showToast("Removed from wishlist");
+        } else {
+          state.wishlist.push(id);
+          showToast("Item wishlisted ♡");
+        }
+        saveSession();
+        renderProducts();
+        renderWishlist();
+        updateCounts();
+      }
+      function renderCart() {
+        const lines = cartLines();
+        $("#cartItems").innerHTML = lines.length ? lines.map((line) => `
+          <article class="cart-row">
+            <img src="${line.product.image}" alt="${line.product.name}" />
+            <div>
+              <h4>${line.product.name}</h4>
+              <span>${rupee(line.product.price)}</span>
+              <div class="qty-control">
+                <button type="button" data-cart-dec="${line.id}">−</button>
+                <strong>${line.quantity}</strong>
+                <button type="button" data-cart-inc="${line.id}">+</button>
+              </div>
+            </div>
+            <button class="danger-button" type="button" data-cart-remove="${line.id}">Remove</button>
+          </article>
+        `).join("") : `<div class="empty-state"><div><div class="empty-illustration">🛍</div><h3>Your cart is empty</h3><p>Start Shopping and build your NovaCart bag.</p><a class="button" href="#shop" data-close-panels>Start Shopping</a></div></div>`;
+        $("#cartTotals").innerHTML = `
+          <div class="summary-row"><span>Subtotal</span><strong>${rupee(subtotal())}</strong></div>
+          <div class="summary-row"><span>Discount</span><strong>-${rupee(discountAmount())}</strong></div>
+          <div class="summary-row"><span>Shipping</span><strong>${rupee(shippingCost())}</strong></div>
+          <div class="summary-row" style="font-size: 1.2rem;"><span>Total</span><strong>${rupee(grandTotal())}</strong></div>
+        `;
+        updateCounts();
+        saveSession();
+      }
+      function renderWishlist() {
+        const wishedProducts = products.filter((product) => state.wishlist.includes(product.id));
+        $("#wishlistItems").innerHTML = wishedProducts.length ? wishedProducts.map((product) => `
+          <article class="wishlist-row">
+            <img src="${product.image}" alt="${product.name}" />
+            <div>
+              <h4>${product.name}</h4>
+              <span>${rupee(product.price)}</span>
+            </div>
+            <div>
+              <button class="mini-button" type="button" data-move-wishlist="${product.id}">Move to Cart</button>
+              <button class="danger-button" type="button" data-wishlist="${product.id}">Remove</button>
+            </div>
+          </article>
+        `).join("") : `<div class="empty-state"><div><div class="empty-illustration">♡</div><h3>Your wishlist is empty</h3><p>Start exploring and save products you love.</p></div></div>`;
+      }
+      function updateCounts() {
+        $("#cartCount").textContent = state.cart.reduce((sum, item) => sum + item.quantity, 0);
+        $("#wishlistCount").textContent = state.wishlist.length;
+      }
+      function initCartAndWishlist() {
+        $("#cartButton").addEventListener("click", () => openPanel("#cartPanel"));
+        $("#wishlistButton").addEventListener("click", () => openPanel("#wishlistPanel"));
+        $$(".close-panel").forEach((button) => button.addEventListener("click", closePanels));
+        $("#overlay").addEventListener("click", () => { closePanels(); closeModals(); });
+        $("#cartApplyPromo").addEventListener("click", () => applyPromo($("#cartPromoInput").value));
+        $("#checkoutOpenButton").addEventListener("click", openCheckout);
+        document.addEventListener("click", (event) => {
+          if (event.target.closest("[data-close-panels]")) closePanels();
+          const inc = event.target.closest("[data-cart-inc]");
+          const dec = event.target.closest("[data-cart-dec]");
+          const remove = event.target.closest("[data-cart-remove]");
+          const move = event.target.closest("[data-move-wishlist]");
+          if (inc) changeCartQty(Number(inc.dataset.cartInc), 1);
+          if (dec) changeCartQty(Number(dec.dataset.cartDec), -1);
+          if (remove) removeCartItem(Number(remove.dataset.cartRemove));
+          if (move) {
+            addToCart(Number(move.dataset.moveWishlist));
+            toggleWishlist(Number(move.dataset.moveWishlist));
+          }
+        });
+      }
+      function openPanel(selector) {
+        closePanels(false);
+        $(selector).classList.add("open");
+        $(selector).setAttribute("aria-hidden", "false");
+        $("#overlay").classList.add("show");
+        document.body.classList.add("panel-open");
+      }
+      function closePanels(hideOverlay = true) {
+        $$(".panel").forEach((panel) => {
+          panel.classList.remove("open");
+          panel.setAttribute("aria-hidden", "true");
+        });
+        if (hideOverlay) {
+          $("#overlay").classList.remove("show");
+          document.body.classList.remove("panel-open");
+        }
+      }
+      function changeCartQty(id, change) {
+        const line = state.cart.find((item) => item.id === id);
+        if (!line) return;
+        line.quantity += change;
+        if (line.quantity <= 0) removeCartItem(id);
+        else renderCart();
+      }
+      function removeCartItem(id) {
+        state.cart = state.cart.filter((item) => item.id !== id);
+        renderCart();
+        showToast("Removed from cart");
+      }
+      function applyPromo(rawCode) {
+        const code = rawCode.trim().toUpperCase();
+        const valid = coupons.some((coupon) => coupon.code === code);
+        state.promo = valid ? code : "";
+        renderCart();
+        if ($("#checkoutContent").innerHTML) renderCheckout();
+        showToast(valid ? "Coupon applied!" : "Coupon not valid");
+      }
+      function openQuickView(id) {
+        const product = products.find((item) => item.id === id);
+        if (!product) return;
+        const gallery = productGallery(product);
+        const related = products.filter((item) => item.category === product.category && item.id !== id).slice(0, 3);
+        $("#quickViewContent").innerHTML = `
+          <div class="quick-view-grid">
+            <div>
+              <div class="gallery-main"><img id="galleryMainImage" src="${gallery[0]}" alt="${product.name}" /></div>
+              <div class="gallery-thumbs">${gallery.map((image, index) => `<button class="${index === 0 ? "active" : ""}" type="button" data-gallery="${image}"><img src="${image}" alt="${product.name} view ${index + 1}" /></button>`).join("")}</div>
+            </div>
+            <div>
+              <p class="eyebrow">${product.category}</p>
+              <h2>${product.name}</h2>
+              <div class="stars">${starText(product.rating)} ${product.rating}</div>
+              <p>${product.details}</p>
+              <div class="price-row"><span><span class="old-price">${rupee(product.originalPrice)}</span> <span class="new-price">${rupee(product.price)}</span></span><span class="sale-badge" style="position: static;">${discountPercent(product)}% off</span></div>
+              <h3>Choose variant</h3>
+              <div class="variant-row">${product.variants.map((variant, index) => `<button class="${index === 0 ? "active" : ""}" type="button" data-variant>${variant}</button>`).join("")}</div>
+              <div class="qty-control"><button type="button" id="quickDec">−</button><strong id="quickQty">1</strong><button type="button" id="quickInc">+</button></div>
+              <div class="form-actions">
+                <button class="button" type="button" id="quickAddCart">Add to Cart</button>
+                <button class="mini-button ${state.wishlist.includes(product.id) ? "active" : ""}" id="wishlistToggle" type="button">Add to Wishlist</button>
+              </div>
+              <h3>Related products</h3>
+              <div class="related-row">${related.map((item) => `<button class="related-item" data-related="${item.id}" type="button"><img src="${item.image}" alt="${item.name}" /><strong>${item.name}</strong></button>`).join("")}</div>
+            </div>
+          </div>
+        `;
+        let quickQty = 1;
+        openModal("#quickViewModal");
+        $$(".gallery-thumbs button").forEach((button) => button.addEventListener("click", () => {
+          $("#galleryMainImage").src = button.dataset.gallery;
+          $$(".gallery-thumbs button").forEach((item) => item.classList.remove("active"));
+          button.classList.add("active");
+        }));
+        $$("[data-variant]").forEach((button) => button.addEventListener("click", () => {
+          $$("[data-variant]").forEach((item) => item.classList.remove("active"));
+          button.classList.add("active");
+        }));
+        $("#quickInc").addEventListener("click", () => { quickQty++; $("#quickQty").textContent = quickQty; });
+        $("#quickDec").addEventListener("click", () => { quickQty = Math.max(1, quickQty - 1); $("#quickQty").textContent = quickQty; });
+        $("#quickAddCart").addEventListener("click", () => { addToCart(product.id, quickQty); closeModals(); openPanel("#cartPanel"); });
+        $("#wishlistToggle").addEventListener("click", () => toggleWishlist(product.id));
+      }
+      function openModal(selector) {
+        $(selector).classList.add("open");
+        $(selector).setAttribute("aria-hidden", "false");
+        $("#overlay").classList.add("show");
+        document.body.classList.add("panel-open");
+      }
+      function closeModals() {
+        $$(".modal").forEach((modal) => {
+          modal.classList.remove("open");
+          modal.setAttribute("aria-hidden", "true");
+        });
+        $("#overlay").classList.remove("show");
+        document.body.classList.remove("panel-open");
+      }
+      function initModals() {
+        document.addEventListener("click", (event) => {
+          if (event.target.closest("[data-close-modal]")) closeModals();
+        });
+      }
+      function openCheckout() {
+        if (!state.cart.length) {
+          showToast("Add at least one item before checkout");
+          return;
+        }
+        closePanels(false);
+        state.checkoutStep = 1;
+        renderCheckout();
+        openModal("#checkoutModal");
+      }
+      function renderCheckout(success = false) {
+        if (success) {
+          const deliveryDate = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toLocaleDateString("en-IN", { weekday: "long", month: "short", day: "numeric" });
+          $("#checkoutContent").innerHTML = `
+            <div class="success-page show">
+              <div>
+                <div class="success-icon">✓</div>
+                <h2>Order placed!</h2>
+                <p>Your order number is <strong>NC-${Date.now().toString().slice(-6)}</strong>.</p>
+                <p>Estimated delivery: <strong>${deliveryDate}</strong></p>
+                <button class="button" data-close-modal type="button">Continue Shopping</button>
+              </div>
+            </div>
+          `;
+          return;
+        }
+        $("#checkoutContent").innerHTML = `
+          <div class="checkout-wrap">
+            <form class="checkout-main" id="checkoutForm" novalidate>
+              <div class="step-tabs">
+                <div class="step-pill ${state.checkoutStep === 1 ? "active" : ""}">1. Contact</div>
+                <div class="step-pill ${state.checkoutStep === 2 ? "active" : ""}">2. Delivery</div>
+                <div class="step-pill ${state.checkoutStep === 3 ? "active" : ""}">3. Review</div>
+              </div>
+              ${checkoutStepMarkup()}
+              <div class="form-actions">
+                <button class="mini-button" id="checkoutBack" type="button" ${state.checkoutStep === 1 ? "style='visibility:hidden;'" : ""}>Back</button>
+                <button class="button" id="checkoutNext" type="submit">${state.checkoutStep === 3 ? "Place Order" : "Continue"}</button>
+              </div>
+            </form>
+            <aside class="checkout-summary">${checkoutSummaryMarkup()}</aside>
+          </div>
+        `;
+        $("#checkoutBack").addEventListener("click", () => { state.checkoutStep = Math.max(1, state.checkoutStep - 1); renderCheckout(); });
+        $("#checkoutForm").addEventListener("submit", handleCheckoutSubmit);
+        $$("input[name='shipping']").forEach((input) => input.addEventListener("change", (event) => { state.checkoutData.shipping = event.target.value; renderCheckout(); }));
+        $$("input[name='payment']").forEach((input) => input.addEventListener("change", (event) => { state.checkoutData.payment = event.target.value; }));
+        const promo = $("#checkoutPromoInput");
+        if (promo) $("#checkoutApplyPromo").addEventListener("click", () => applyPromo(promo.value));
+      }
+      function checkoutStepMarkup() {
+        if (state.checkoutStep === 1) {
+          return `
+            <div class="checkout-step active">
+              <h3>Contact & Delivery</h3>
+              <div class="checkout-grid">
+                <label class="checkout-field"><span>Name</span><input name="name" required value="${state.checkoutData.name || ""}" /><small class="field-error"></small></label>
+                <label class="checkout-field"><span>Email</span><input name="email" type="email" required value="${state.checkoutData.email || ""}" /><small class="field-error"></small></label>
+                <label class="checkout-field"><span>Phone</span><input name="phone" required value="${state.checkoutData.phone || ""}" /><small class="field-error"></small></label>
+                <label class="checkout-field"><span>City</span><input name="city" required value="${state.checkoutData.city || ""}" /><small class="field-error"></small></label>
+                <label class="checkout-field"><span>Pincode</span><input name="pincode" required value="${state.checkoutData.pincode || ""}" /><small class="field-error"></small></label>
+                <label class="checkout-field field-wide"><span>Address</span><textarea name="address" required>${state.checkoutData.address || ""}</textarea><small class="field-error"></small></label>
+              </div>
+            </div>
+          `;
+        }
+        if (state.checkoutStep === 2) {
+          return `
+            <div class="checkout-step active">
+              <h3>Delivery Speed</h3>
+              <div class="option-grid">
+                <label class="option-card"><input type="radio" name="shipping" value="standard" ${state.checkoutData.shipping === "standard" ? "checked" : ""} /> <strong>Standard</strong><span>3-5 days · Free</span></label>
+                <label class="option-card"><input type="radio" name="shipping" value="express" ${state.checkoutData.shipping === "express" ? "checked" : ""} /> <strong>Express</strong><span>1-2 days · ₹99</span></label>
+              </div>
+              <h3>Payment</h3>
+              <div class="option-grid">
+                <label class="option-card"><input type="radio" name="payment" value="card" ${state.checkoutData.payment === "card" ? "checked" : ""} /> <strong>Card</strong><span>Debit or credit</span></label>
+                <label class="option-card"><input type="radio" name="payment" value="upi" ${state.checkoutData.payment === "upi" ? "checked" : ""} /> <strong>UPI</strong><span>Pay by UPI</span></label>
+                <label class="option-card"><input type="radio" name="payment" value="cod" ${state.checkoutData.payment === "cod" ? "checked" : ""} /> <strong>Cash on Delivery</strong><span>Pay later</span></label>
+              </div>
+            </div>
+          `;
+        }
+        return `
+          <div class="checkout-step active">
+            <h3>Order Review</h3>
+            ${cartLines().map((line) => `<div class="summary-row"><span>${line.product.name} × ${line.quantity}</span><strong>${rupee(line.product.price * line.quantity)}</strong></div>`).join("")}
+            <label class="filter-field" style="margin-top: 1rem;"><span>Promo code</span><input class="promo-input" id="checkoutPromoInput" value="${state.promo}" placeholder="NOVA15" /></label>
+            <button class="mini-button" id="checkoutApplyPromo" type="button">Apply Coupon</button>
+          </div>
+        `;
+      }
+      function checkoutSummaryMarkup() {
+        return `
+          <h3>Order Summary</h3>
+          ${cartLines().map((line) => `<div class="summary-row"><span>${line.product.name} × ${line.quantity}</span><strong>${rupee(line.product.price * line.quantity)}</strong></div>`).join("")}
+          <hr />
+          <div class="summary-row"><span>Subtotal</span><strong>${rupee(subtotal())}</strong></div>
+          <div class="summary-row"><span>Discount</span><strong>-${rupee(discountAmount())}</strong></div>
+          <div class="summary-row"><span>Shipping</span><strong>${rupee(shippingCost())}</strong></div>
+          <div class="summary-row" style="font-size: 1.25rem;"><span>Total</span><strong>${rupee(grandTotal())}</strong></div>
+        `;
+      }
+      function handleCheckoutSubmit(event) {
+        event.preventDefault();
+        if (state.checkoutStep === 1) {
+          if (!validateForm(event.target)) return;
+          const data = new FormData(event.target);
+          ["name", "email", "phone", "city", "pincode", "address"].forEach((key) => state.checkoutData[key] = data.get(key));
+          state.checkoutStep = 2;
+          renderCheckout();
+        } else if (state.checkoutStep === 2) {
+          state.checkoutStep = 3;
+          renderCheckout();
+        } else {
+          const button = $("#checkoutNext");
+          button.innerHTML = `<span class="loader-dot"></span>Placing Order...`;
+          button.disabled = true;
+          setTimeout(() => {
+            state.cart = [];
+            state.promo = "";
+            renderCart();
+            renderCheckout(true);
+            confetti(70);
+          }, 1300);
+        }
+      }
+      function validateForm(form) {
+        let valid = true;
+        form.querySelectorAll("[required]").forEach((input) => {
+          const field = input.closest("label");
+          const error = field?.querySelector(".field-error");
+          const empty = !input.value.trim();
+          const badEmail = input.type === "email" && input.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value);
+          field?.classList.toggle("invalid", empty || badEmail);
+          if (error) error.textContent = empty ? "Please fill this field." : badEmail ? "Please enter a valid email." : "";
+          if (empty || badEmail) valid = false;
+        });
+        return valid;
+      }
+      function initSearch() {
+        $("#searchToggle").addEventListener("click", () => {
+          $("#searchShell").classList.toggle("open");
+          if ($("#searchShell").classList.contains("open")) $("#navSearchInput").focus();
+          renderSearchResults();
+        });
+        $("#navSearchInput").addEventListener("input", renderSearchResults);
+        $("#navSearchInput").addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            const first = searchMatches()[0];
+            if (first) goToProduct(first.id);
+          }
+        });
+      }
+      function searchMatches() {
+        const query = $("#navSearchInput").value.trim().toLowerCase();
+        if (!query) return products.slice(0, 5);
+        return products.filter((product) => product.name.toLowerCase().includes(query) || product.category.toLowerCase().includes(query)).slice(0, 6);
+      }
+      function renderSearchResults() {
+        const dropdown = $("#searchDropdown");
+        if (!$("#searchShell").classList.contains("open")) return;
+        const matches = searchMatches();
+        dropdown.classList.add("show");
+        dropdown.innerHTML = matches.length ? matches.map((product) => `
+          <button class="search-result" type="button" data-search-product="${product.id}">
+            <img src="${product.image}" alt="${product.name}" />
+            <span><strong>${product.name}</strong><span>${product.category}</span></span>
+            <strong>${rupee(product.price)}</strong>
+          </button>
+        `).join("") : `<div class="empty-state" style="min-height: 120px;">No results found. Try searching Electronics, Fashion or Books.</div>`;
+        $$("[data-search-product]").forEach((button) => button.addEventListener("click", () => goToProduct(Number(button.dataset.searchProduct))));
+      }
+      function goToProduct(id) {
+        $("#searchShell").classList.remove("open");
+        $("#searchDropdown").classList.remove("show");
+        state.filters = { query: "", category: "All", sort: "featured", price: 5000, stock: false, sale: false, fast: false };
+        state.productLimit = 16;
+        renderProducts();
+        setTimeout(() => {
+          document.querySelector(`#product-${id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+          document.querySelector(`#product-${id}`)?.classList.add("highlight");
+        }, 120);
+      }
+      function renderReviews() {
+        const breakdown = { 5: 72, 4: 18, 3: 7, 2: 2, 1: 1 };
+        $("#ratingBars").innerHTML = [5, 4, 3, 2, 1].map((star) => `<div class="bar-row"><span>${star} star</span><div class="bar"><span style="width:${breakdown[star]}%"></span></div><span>${breakdown[star]}%</span></div>`).join("");
+        let list = [...reviews];
+        if (state.reviewFilter !== "all") list = list.filter((review) => review.rating === Number(state.reviewFilter));
+        if (state.reviewSort === "helpful") list.sort((a, b) => b.helpful - a.helpful);
+        if (state.reviewSort === "verified") list.sort((a, b) => Number(b.verified) - Number(a.verified));
+        $("#reviewsList").innerHTML = list.map((review) => `
+          <article class="review-card reveal">
+            <div class="review-top">
+              <div class="review-person"><span class="avatar">${review.name.split(" ").map((part) => part[0]).join("")}</span><div><strong>${review.name}</strong><p>${review.date}</p></div></div>
+              ${review.verified ? `<span class="verified-badge">Verified Purchase</span>` : ""}
+            </div>
+            <div class="stars">${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)}</div>
+            <h3>${review.title}</h3>
+            <p>${review.text}</p>
+            <div class="helpful-row">Helpful? <button class="mini-button" type="button" data-helpful>Yes (${review.helpful})</button><button class="mini-button" type="button">No</button></div>
+          </article>
+        `).join("");
+      }
+      function initReviews() {
+        $("#reviewStarFilter").addEventListener("change", (event) => { state.reviewFilter = event.target.value; renderReviews(); });
+        $("#reviewSortFilter").addEventListener("change", (event) => { state.reviewSort = event.target.value; renderReviews(); });
+        $("#writeReviewButton").addEventListener("click", () => openModal("#reviewModal"));
+        $("#reviewStars").innerHTML = [1, 2, 3, 4, 5].map((star) => `<button type="button" data-review-star="${star}">★</button>`).join("");
+        $$("[data-review-star]").forEach((button) => button.addEventListener("click", () => {
+          $("#reviewForm [name='rating']").value = button.dataset.reviewStar;
+          $$("[data-review-star]").forEach((item) => item.classList.toggle("active", Number(item.dataset.reviewStar) <= Number(button.dataset.reviewStar)));
+        }));
+        $("#reviewForm").addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (!validateForm(event.target)) return;
+          showToast("Thank you for your review!");
+          closeModals();
+          event.target.reset();
+        });
+      }
+      function renderCareers() {
+        $("#jobsList").innerHTML = jobs.map((job, index) => `
+          <article class="job-card reveal">
+            <button class="job-toggle" type="button">
+              <div class="job-summary"><div><h3>${job.title}</h3><p>${job.department} · ${job.location} · ${job.type}</p></div><strong>+</strong></div>
+            </button>
+            <div class="job-detail">
+              <p>${job.description}</p>
+              <h4>Requirements</h4>
+              <ul>${job.requirements.map((item) => `<li>${item}</li>`).join("")}</ul>
+              <h4>Responsibilities</h4>
+              <ul>${job.responsibilities.map((item) => `<li>${item}</li>`).join("")}</ul>
+              <button class="button" type="button" data-apply="${index}">Apply Now</button>
+            </div>
+          </article>
+        `).join("");
+        $$(".job-toggle").forEach((button) => button.addEventListener("click", () => button.closest(".job-card").classList.toggle("open")));
+        $$("[data-apply]").forEach((button) => button.addEventListener("click", () => {
+          $("#applicationTitle").textContent = `Apply for ${jobs[Number(button.dataset.apply)].title}`;
+          openModal("#applicationModal");
+        }));
+      }
+      function renderAbout() {
+        $("#teamGrid").innerHTML = teamMembers.map((member) => `
+          <article class="team-card reveal">
+            <img src="${member.image}" alt="${member.name}" />
+            <h3>${member.name}</h3>
+            <strong>${member.role}</strong>
+            <p>${member.bio}</p>
+          </article>
+        `).join("");
+      }
+      function initForms() {
+        $("#contactForm").addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (!validateForm(event.target)) return;
+          showToast("Message sent successfully!");
+          event.target.reset();
+        });
+        $("#applicationForm").addEventListener("submit", (event) => {
+          event.preventDefault();
+          if (!validateForm(event.target)) return;
+          showToast("Application submitted!");
+          closeModals();
+          event.target.reset();
+        });
+        $("#newsletterForm").addEventListener("submit", (event) => {
+          event.preventDefault();
+          showToast("Subscribed to NovaCart!");
+          confetti(28);
+          event.target.reset();
+        });
+      }
+      function initApp() {
+        initLoader();
+        initHeader();
+        initTypewriter();
+        initButtons();
+        initBanners();
+        initCountdowns();
+        renderCoupons();
+        initGame();
+        setupFilters();
+        renderProducts();
+        initProductActions();
+        initCartAndWishlist();
+        initModals();
+        initSearch();
+        renderReviews();
+        initReviews();
+        renderCareers();
+        renderAbout();
+        initForms();
+        renderCart();
+        renderWishlist();
+        initRevealAnimations();
+      }
+      document.addEventListener("DOMContentLoaded", initApp);
+    </script>
   </body>
 </html>
